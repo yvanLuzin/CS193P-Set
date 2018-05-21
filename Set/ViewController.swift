@@ -35,23 +35,25 @@ class ViewController: UIViewController {
     }
 
     @IBAction func touchCardButton(_ sender: UIButton) {
-        if let cardNumber = cardButton.index(of: sender) {
-            if game.selectedCards.count < 3 {
-                let card = game.cardsBeingPlayed[cardNumber]
-
-                if game.selectedCards.contains(card) {
-                    game.selectedCards.remove(at: game.selectedCards.index(of: card)!)
-                } else {
-                    game.selectedCards.append(card)
-                }
-            } else {
-                game.selectedCards.removeAll()
-            }
+        if let index = cardButton.index(of: sender) {
+//            if game.selectedCards.count < 3 {
+//                let card = game.cardsBeingPlayed[cardNumber]
+//
+//                if game.selectedCards.contains(card) {
+//                    game.selectedCards.remove(at: game.selectedCards.index(of: card)!)
+//                } else {
+//                    game.selectedCards.append(card)
+//                }
+//            } else {
+//                game.selectedCards.removeAll()
+//            }
+            game.selectCard(index)
             updateViewFromModel()
         }
     }
 
     /// Sets the appearance of `button` based on `card` enum options
+    /// - TODO: Make use of nil to mark blank card
     fileprivate func setButtonAppearance(_ card: Card, for button: UIButton) {
         let count = card.count.rawValue
         var color: UIColor {
@@ -97,10 +99,12 @@ class ViewController: UIViewController {
 
         if game.selectedCards.contains(card) {
             button.layer.borderWidth = 3.0
-            button.layer.borderColor = UIColor.blue.cgColor
+            button.layer.borderColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
         } else {
             button.layer.borderWidth = 0.0
         }
+
+        button.layer.backgroundColor = game.matchedCards.contains(card) ? #colorLiteral(red: 0.5843137503, green: 0.8235294223, blue: 0.4196078479, alpha: 1) : #colorLiteral(red: 0.9607843137, green: 0.9529411765, blue: 0.9450980392, alpha: 1)
     }
 
     func updateViewFromModel() {

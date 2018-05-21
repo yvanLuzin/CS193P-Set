@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Card: CustomStringConvertible {
+struct Card: CustomStringConvertible, Equatable {
     var description: String {
         return "Card with \(count) \(shading) \(color) \(shape)\(count.rawValue > 1 ? "s" : "")"
     }

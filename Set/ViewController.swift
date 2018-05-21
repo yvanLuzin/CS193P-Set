@@ -27,18 +27,27 @@ class ViewController: UIViewController {
     @IBOutlet var dealThreeMoreCardsButton: UIButton!
 
     @IBAction func dealThreeMoreCards(_ sender: UIButton) {
-        print("deal 3 more cards")
         game.dealCards(3)
         updateViewFromModel()
     }
 
     @IBAction func newGame(_ sender: UIButton) {
-        print("new game")
     }
 
     @IBAction func touchCardButton(_ sender: UIButton) {
         if let cardNumber = cardButton.index(of: sender) {
+            if game.selectedCards.count < 3 {
+                let card = game.cardsBeingPlayed[cardNumber]
 
+                if game.selectedCards.contains(card) {
+                    game.selectedCards.remove(at: game.selectedCards.index(of: card)!)
+                } else {
+                    game.selectedCards.append(card)
+                }
+            } else {
+                game.selectedCards.removeAll()
+            }
+            updateViewFromModel()
         }
     }
 
@@ -85,16 +94,21 @@ class ViewController: UIViewController {
                 String(repeating: shape, count: count),
                 attributes: attributes),
             for: .normal)
+
+        if game.selectedCards.contains(card) {
+            button.layer.borderWidth = 3.0
+            button.layer.borderColor = UIColor.blue.cgColor
+        } else {
+            button.layer.borderWidth = 0.0
+        }
     }
 
     func updateViewFromModel() {
         for index in game.cardsBeingPlayed.indices {
             let button = cardButton[index]
             let card = game.cardsBeingPlayed[index]
-
             setButtonAppearance(card, for: button)
         }
-
         dealThreeMoreCardsButton.isEnabled = game.cardsBeingPlayed.count <= cardButton.count-3
     }
 
@@ -106,7 +120,5 @@ class ViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-
-
 }
 

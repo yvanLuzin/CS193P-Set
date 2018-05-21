@@ -23,8 +23,8 @@ class Set {
         }
     }
 
-    func selectCard(_ card: Card) {
-        selectedCards.append(card)
+    func matchCard() {
+        
     }
 
     init() {

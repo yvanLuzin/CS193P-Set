@@ -14,6 +14,10 @@
 		BF174F1F20AAAD0700E476BC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF174F1D20AAAD0700E476BC /* LaunchScreen.storyboard */; };
 		BF174F2A20AAAD0700E476BC /* SetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF174F2920AAAD0700E476BC /* SetTests.swift */; };
 		BF174F3520AAAD0700E476BC /* SetUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF174F3420AAAD0700E476BC /* SetUITests.swift */; };
+		BF9D0CB320AAD59900A86D0D /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9D0CB220AAD59900A86D0D /* Card.swift */; };
+		BF9D0CB520AAD8E800A86D0D /* Set.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9D0CB420AAD8E800A86D0D /* Set.swift */; };
+		BF9D0CB720AB3CBD00A86D0D /* SetDeck.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9D0CB620AB3CBD00A86D0D /* SetDeck.swift */; };
+		BF9D0CB920AB42D000A86D0D /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9D0CB820AB42D000A86D0D /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +51,10 @@
 		BF174F3020AAAD0700E476BC /* SetUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SetUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF174F3420AAAD0700E476BC /* SetUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetUITests.swift; sourceTree = "<group>"; };
 		BF174F3620AAAD0700E476BC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BF9D0CB220AAD59900A86D0D /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
+		BF9D0CB420AAD8E800A86D0D /* Set.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Set.swift; sourceTree = "<group>"; };
+		BF9D0CB620AB3CBD00A86D0D /* SetDeck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetDeck.swift; sourceTree = "<group>"; };
+		BF9D0CB820AB42D000A86D0D /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +108,10 @@
 				BF174F1420AAAD0600E476BC /* AppDelegate.swift */,
 				BF174F1620AAAD0600E476BC /* ViewController.swift */,
 				BF174F1820AAAD0600E476BC /* Main.storyboard */,
+				BF9D0CB620AB3CBD00A86D0D /* SetDeck.swift */,
+				BF9D0CB820AB42D000A86D0D /* Extensions.swift */,
+				BF9D0CB220AAD59900A86D0D /* Card.swift */,
+				BF9D0CB420AAD8E800A86D0D /* Set.swift */,
 				BF174F1B20AAAD0700E476BC /* Assets.xcassets */,
 				BF174F1D20AAAD0700E476BC /* LaunchScreen.storyboard */,
 				BF174F2020AAAD0700E476BC /* Info.plist */,
@@ -257,7 +269,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				BF174F1720AAAD0600E476BC /* ViewController.swift in Sources */,
+				BF9D0CB320AAD59900A86D0D /* Card.swift in Sources */,
+				BF9D0CB720AB3CBD00A86D0D /* SetDeck.swift in Sources */,
 				BF174F1520AAAD0600E476BC /* AppDelegate.swift in Sources */,
+				BF9D0CB520AAD8E800A86D0D /* Set.swift in Sources */,
+				BF9D0CB920AB42D000A86D0D /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

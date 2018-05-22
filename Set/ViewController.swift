@@ -27,7 +27,13 @@ class ViewController: UIViewController {
     @IBOutlet var dealThreeMoreCardsButton: UIButton!
 
     @IBAction func dealThreeMoreCards(_ sender: UIButton) {
-        game.dealCards(3)
+
+        if game.selectedCards.count > 0 && game.selectedCards.suffix(3) == game.matchedCards.suffix(3) {
+            game.replaceCards()
+        } else {
+            game.dealCards(3)
+            
+        }
         updateViewFromModel()
     }
 

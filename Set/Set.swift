@@ -18,11 +18,20 @@ class Set {
     ///BUG: Probably will crash when deck is empty
     ///TODO: Should replace matched cards
     func dealCards(_ amount: Int) {
-        for _ in 0..<amount {
-            if let card = deck.drawCard() {
-                cardsBeingPlayed.append(card)
+//        if selectedCards.count > 0 && selectedCards.suffix(3) == matchedCards.suffix(3) {
+//            for index in cardsBeingPlayed.indices {
+//                if matchedCards.contains(cardsBeingPlayed[index]) {
+//                    cardsBeingPlayed.remove(at: index)
+//                    cardsBeingPlayed.insert(deck.drawCard()!, at: index)
+//                }
+//            }
+//        } else {
+            for _ in 0..<amount {
+                if let card = deck.drawCard() {
+                    cardsBeingPlayed.append(card)
+                }
             }
-        }
+//        }
     }
 
     ///TODO: Refactor so it doesn't look like ass
@@ -73,12 +82,7 @@ class Set {
         let card = cardsBeingPlayed[index]
 
         if selectedCards.count > 2 {
-            for index in cardsBeingPlayed.indices {
-                if matchedCards.contains(cardsBeingPlayed[index]) {
-                    cardsBeingPlayed.remove(at: index)
-                    cardsBeingPlayed.insert(deck.drawCard()!, at: index)
-                }
-            }
+            replaceCards()
             selectedCards.removeAll()
         }
 
@@ -90,6 +94,15 @@ class Set {
 
         if selectedCards.count == 3 {
             matchCard()
+        }
+    }
+
+    func replaceCards() {
+        for index in cardsBeingPlayed.indices {
+            if matchedCards.contains(cardsBeingPlayed[index]) {
+                cardsBeingPlayed.remove(at: index)
+                cardsBeingPlayed.insert(deck.drawCard()!, at: index)
+            }
         }
     }
 

@@ -12,6 +12,14 @@ class ViewController: UIViewController {
 
     var game = Set()
 
+    var isMatched: Bool {
+        return game.selectedCards.count > 0 && game.selectedCards.suffix(3) == game.matchedCards.suffix(3)
+    }
+
+    var isBoardHaveEnoughSpace: Bool {
+        return game.cardsBeingPlayed.count <= cardButton.count-3
+    }
+
     @IBOutlet var scoreLabel: UILabel!
 
     ///Collection of cards on playing field
@@ -27,28 +35,33 @@ class ViewController: UIViewController {
     @IBOutlet var dealThreeMoreCardsButton: UIButton!
 
     @IBAction func dealThreeMoreCards(_ sender: UIButton) {
-
-        if game.selectedCards.count > 0 && game.selectedCards.suffix(3) == game.matchedCards.suffix(3) {
+        if isMatched {
             game.replaceCards()
+            print("replace")
         } else {
             game.dealCards(3)
-            
+            print("deal")
         }
         updateViewFromModel()
     }
 
     @IBAction func newGame(_ sender: UIButton) {
+        cardButton.forEach { (button) in
+            button.setAttributedTitle(NSAttributedString(string: "", attributes: nil), for: .normal)
+        }
+        game.newGame()
+        updateViewFromModel()
     }
 
     @IBAction func touchCardButton(_ sender: UIButton) {
         if let index = cardButton.index(of: sender) {
+            guard index < game.cardsBeingPlayed.count else {return}
             game.selectCard(index)
             updateViewFromModel()
         }
     }
 
     /// Sets the appearance of `button` based on `card` enum options
-    /// - TODO: Make use of nil to mark blank card
     fileprivate func setButtonAppearance(_ card: Card, for button: UIButton) {
         let count = card.count.rawValue
         var color: UIColor {
@@ -118,7 +131,11 @@ class ViewController: UIViewController {
             let card = game.cardsBeingPlayed[index]
             setButtonAppearance(card, for: button)
         }
-        dealThreeMoreCardsButton.isEnabled = game.cardsBeingPlayed.count <= cardButton.count-3
+
+        ///TODO: move code removing empty cards here
+
+        scoreLabel.text = "Score: \(game.score)"
+        dealThreeMoreCardsButton.isEnabled = isBoardHaveEnoughSpace || isMatched
     }
 
     override func viewDidLoad() {

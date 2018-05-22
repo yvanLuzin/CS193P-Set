@@ -30,4 +30,8 @@ struct SetDeck {
             return nil
         }
     }
+
+    mutating func clearDeck() {
+        cards.removeAll()
+    }
 }

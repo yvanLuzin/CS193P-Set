@@ -13,25 +13,17 @@ class Set {
     private(set) var cardsBeingPlayed = [Card]()
     private(set) var selectedCards = [Card]()
     private(set) var matchedCards = [Card]()
+    private(set) var score = 0
 
     ///Append `amount` cards to `cardsInGame`
     ///BUG: Probably will crash when deck is empty
     ///TODO: Should replace matched cards
     func dealCards(_ amount: Int) {
-//        if selectedCards.count > 0 && selectedCards.suffix(3) == matchedCards.suffix(3) {
-//            for index in cardsBeingPlayed.indices {
-//                if matchedCards.contains(cardsBeingPlayed[index]) {
-//                    cardsBeingPlayed.remove(at: index)
-//                    cardsBeingPlayed.insert(deck.drawCard()!, at: index)
-//                }
-//            }
-//        } else {
             for _ in 0..<amount {
                 if let card = deck.drawCard() {
                     cardsBeingPlayed.append(card)
                 }
             }
-//        }
     }
 
     ///TODO: Refactor so it doesn't look like ass
@@ -72,8 +64,13 @@ class Set {
 
         print("Color: \(matchedColors), Shape: \(matchedShapes), Shade: \(matchedShades), Count: \(matchedCounts)")
 
-        if matchedColors != 2 && matchedShapes != 2 && matchedShades != 2 && matchedCounts != 2 {
+//        if matchedColors != 2 && matchedShapes != 2 && matchedShades != 2 && matchedCounts != 2 {
+        //for debug, select any 3 matching cards
+        if matchedColors == 3 || matchedShapes == 3 || matchedShades == 3 || matchedCounts == 3 {
             matchedCards += selectedCards
+            score += 3
+        } else {
+            score -= 5
         }
     }
 
@@ -88,6 +85,7 @@ class Set {
 
         if selectedCards.contains(card) {
             selectedCards.remove(at: selectedCards.index(of: card)!)
+            score -= 1
         } else {
             selectedCards.append(card)
         }
@@ -102,8 +100,19 @@ class Set {
             if matchedCards.contains(cardsBeingPlayed[index]) {
                 cardsBeingPlayed.remove(at: index)
                 cardsBeingPlayed.insert(deck.drawCard()!, at: index)
+                selectedCards.removeAll()
             }
         }
+    }
+
+    func newGame() {
+        deck.clearDeck()
+        deck = SetDeck()
+        cardsBeingPlayed.removeAll()
+        selectedCards.removeAll()
+        matchedCards.removeAll()
+        dealCards(12)
+        score = 0
     }
 
     init() {

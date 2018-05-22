@@ -16,6 +16,7 @@ class Set {
 
     ///Append `amount` cards to `cardsInGame`
     ///BUG: Probably will crash when deck is empty
+    ///TODO: Should replace matched cards
     func dealCards(_ amount: Int) {
         for _ in 0..<amount {
             if let card = deck.drawCard() {
@@ -24,9 +25,47 @@ class Set {
         }
     }
 
-    /// TODO: Implement set rules of card matching
+    ///TODO: Refactor so it doesn't look like ass
     func matchCard() {
-        matchedCards += selectedCards
+
+        //matched numbers is array
+        //work through all features and push results into array
+        //if matched numbers contains 2, fail
+        //otherwise, match cards
+
+        var matchedColors: Int {
+                let buffer = selectedCards[0]
+                return selectedCards.filter({ (card) -> Bool in
+                    card.color == buffer.color
+                }).count
+        }
+
+        var matchedShapes: Int {
+            let buffer = selectedCards[0]
+            return selectedCards.filter({ (card) -> Bool in
+                card.shape == buffer.shape
+            }).count
+        }
+
+        var matchedShades: Int {
+            let buffer = selectedCards[0]
+            return selectedCards.filter({ (card) -> Bool in
+                card.shading == buffer.shading
+            }).count
+        }
+
+        var matchedCounts: Int {
+            let buffer = selectedCards[0]
+            return selectedCards.filter({ (card) -> Bool in
+                card.count == buffer.count
+            }).count
+        }
+
+        print("Color: \(matchedColors), Shape: \(matchedShapes), Shade: \(matchedShades), Count: \(matchedCounts)")
+
+        if matchedColors != 2 && matchedShapes != 2 && matchedShades != 2 && matchedCounts != 2 {
+            matchedCards += selectedCards
+        }
     }
 
     /// BUG: You can select already selected card after it was matched

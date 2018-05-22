@@ -13,3 +13,13 @@ extension Int {
         return Int(arc4random_uniform(UInt32(self)))
     }
 }
+
+//extension Array {
+//    func matched(by feature: Card.Feature) {
+//        let buffer = self[0]
+//
+//        return self.filter({ (element: Card) -> Bool in
+//            element.feature
+//        })
+//    }
+//}

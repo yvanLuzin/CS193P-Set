@@ -36,17 +36,6 @@ class ViewController: UIViewController {
 
     @IBAction func touchCardButton(_ sender: UIButton) {
         if let index = cardButton.index(of: sender) {
-//            if game.selectedCards.count < 3 {
-//                let card = game.cardsBeingPlayed[cardNumber]
-//
-//                if game.selectedCards.contains(card) {
-//                    game.selectedCards.remove(at: game.selectedCards.index(of: card)!)
-//                } else {
-//                    game.selectedCards.append(card)
-//                }
-//            } else {
-//                game.selectedCards.removeAll()
-//            }
             game.selectCard(index)
             updateViewFromModel()
         }
@@ -104,7 +93,17 @@ class ViewController: UIViewController {
             button.layer.borderWidth = 0.0
         }
 
-        button.layer.backgroundColor = game.matchedCards.contains(card) ? #colorLiteral(red: 0.5843137503, green: 0.8235294223, blue: 0.4196078479, alpha: 1) : #colorLiteral(red: 0.9607843137, green: 0.9529411765, blue: 0.9450980392, alpha: 1)
+        var backgroundColor: CGColor {
+            if game.matchedCards.contains(card) {
+                return #colorLiteral(red: 0.5843137503, green: 0.8235294223, blue: 0.4196078479, alpha: 1)
+            } else if game.selectedCards.count > 2 && game.selectedCards.contains(card) {
+                return #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
+            } else {
+                return #colorLiteral(red: 0.9607843137, green: 0.9529411765, blue: 0.9450980392, alpha: 1)
+            }
+        }
+
+        button.layer.backgroundColor = backgroundColor
     }
 
     func updateViewFromModel() {

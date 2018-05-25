@@ -29,48 +29,18 @@ class Set {
     ///TODO: Refactor so it doesn't look like ass
     func matchCard() {
 
-        //matched numbers is array
-        //work through all features and push results into array
-        //if matched numbers contains 2, fail
-        //otherwise, match cards
+        let matchingResults = [
+            selectedCards.filter({ $0.color == selectedCards.first?.color }).count,
+            selectedCards.filter({ $0.shape == selectedCards.first?.shape }).count,
+            selectedCards.filter({ $0.shading == selectedCards.first?.shading }).count,
+            selectedCards.filter({ $0.count == selectedCards.first?.count }).count
+        ]
 
-        var matchedColors: Int {
-                let buffer = selectedCards[0]
-                return selectedCards.filter({ (card) -> Bool in
-                    card.color == buffer.color
-                }).count
-        }
-
-        var matchedShapes: Int {
-            let buffer = selectedCards[0]
-            return selectedCards.filter({ (card) -> Bool in
-                card.shape == buffer.shape
-            }).count
-        }
-
-        var matchedShades: Int {
-            let buffer = selectedCards[0]
-            return selectedCards.filter({ (card) -> Bool in
-                card.shading == buffer.shading
-            }).count
-        }
-
-        var matchedCounts: Int {
-            let buffer = selectedCards[0]
-            return selectedCards.filter({ (card) -> Bool in
-                card.count == buffer.count
-            }).count
-        }
-
-        print("Color: \(matchedColors), Shape: \(matchedShapes), Shade: \(matchedShades), Count: \(matchedCounts)")
-
-//        if matchedColors != 2 && matchedShapes != 2 && matchedShades != 2 && matchedCounts != 2 {
-        //for debug, select any 3 matching cards
-        if matchedColors == 3 || matchedShapes == 3 || matchedShades == 3 || matchedCounts == 3 {
+        if matchingResults.contains(2) {
+            score -= 5
+        } else {
             matchedCards += selectedCards
             score += 3
-        } else {
-            score -= 5
         }
     }
 

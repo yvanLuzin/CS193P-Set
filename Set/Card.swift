@@ -8,58 +8,55 @@
 
 import Foundation
 
-struct Card: CustomStringConvertible, Equatable {
-    var description: String {
-        return "Card with \(count) \(shading) \(color) \(shape)\(count.rawValue > 1 ? "s" : "")"
+struct SetProperties {
+    enum Feature {
+        case color, shape, count, shading
+        static var all = [Feature.color, .shape, count, .shading]
     }
 
-    var color: Color
-    var shape: Shape
-    var count: Count
-    var shading: Shading
+    enum Value {
+        case first, second, third
+        static var all = [Value.first, .second, .third]
+    }
 
-    enum Color: CustomStringConvertible {
-        var description: String {
-            switch self {
-            case .firstColor: return "red"
-            case .secondColor: return "yellow"
-            case .thirdColor: return "blue"
-            }
-        }
-
-        case firstColor, secondColor, thirdColor
-        static var all = [Color.firstColor, .secondColor, .thirdColor]
-    }
-    enum Shape: CustomStringConvertible {
-        var description: String {
-            switch self {
-            case .firstShape: return "triangle"
-            case .secondShape: return "circle"
-            case .thirdShape: return "square"
-            }
-        }
-        case firstShape, secondShape, thirdShape
-        static var all = [Shape.firstShape, .secondShape, .thirdShape]
-    }
-    enum Count: Int, CustomStringConvertible {
-        var description: String {
-            return String(self.rawValue)
-        }
-        case firstNumber = 1, secondNumber, thirdNumber
-        static var all = [Count.firstNumber, .secondNumber, .thirdNumber]
-    }
-    enum Shading: CustomStringConvertible {
-        var description: String {
-            switch self {
-            case .firstShading: return "solid"
-            case .secondShading: return "outlined"
-            case .thirdShading: return "striped"
-            }
-        }
-
-        case firstShading, secondShading, thirdShading
-        static var all = [Shading.firstShading, .secondShading, .thirdShading]
-    }
+    private(set) var feature: Feature
+    private(set) var value: Value
 }
 
+struct Card: Hashable {
+    var hashValue: Int { return identifier }
 
+    static func == (lhs: Card, rhs: Card) -> Bool {
+        return lhs.identifier == rhs.identifier
+    }
+
+    private var color: SetProperties
+    private var shape: SetProperties
+    private var shading: SetProperties
+    private var count: SetProperties
+    private var identifier: Int
+
+    private static var identifierFactory = 0
+    private static func getUniqueIdentifier() -> Int {
+        identifierFactory += 1
+        return identifierFactory
+    }
+
+    init(colorValue: SetProperties.Value, shapeValue: SetProperties.Value, shadingValue: SetProperties.Value, countValue: SetProperties.Value) {
+        self.color = SetProperties(feature: .color, value: colorValue)
+        self.shape = SetProperties(feature: .shape, value: shapeValue)
+        self.shading = SetProperties(feature: .shading, value: shadingValue)
+        self.count = SetProperties(feature: .count, value: countValue)
+
+        self.identifier = Card.getUniqueIdentifier()
+    }
+
+    subscript (property: SetProperties.Feature) -> SetProperties.Value {
+        switch property {
+        case .color: return color.value
+        case .shape: return shape.value
+        case .shading: return shading.value
+        case .count: return count.value
+        }
+    }
+}

@@ -19,22 +19,22 @@ class Set {
     ///BUG: Probably will crash when deck is empty
     ///TODO: Should replace matched cards
     func dealCards(_ amount: Int) {
-            for _ in 0..<amount {
-                if let card = deck.drawCard() {
-                    cardsBeingPlayed.append(card)
-                }
+        for _ in 0..<amount {
+            if let card = deck.drawCard() {
+                cardsBeingPlayed.append(card)
             }
+        }
     }
 
     ///TODO: Refactor so it doesn't look like ass
     func matchCard() {
 
-        let matchingResults = [
-            selectedCards.filter({ $0.color == selectedCards.first?.color }).count,
-            selectedCards.filter({ $0.shape == selectedCards.first?.shape }).count,
-            selectedCards.filter({ $0.shading == selectedCards.first?.shading }).count,
-            selectedCards.filter({ $0.count == selectedCards.first?.count }).count
-        ]
+        var matchingResults = [Int]()
+
+        for feature in SetProperties.Feature.all {
+            let amountOfMatchedFeatures = selectedCards.filter({ $0[feature] == selectedCards.first?[feature] }).count
+            matchingResults.append(amountOfMatchedFeatures)
+        }
 
         if matchingResults.contains(2) {
             score -= 5

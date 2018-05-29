@@ -12,11 +12,11 @@ struct SetDeck {
     var cards = [Card]()
 
     init() {
-        for color in Card.Color.all {
-            for shape in Card.Shape.all {
-                for number in Card.Count.all {
-                    for shading in Card.Shading.all {
-                        cards.append(Card(color: color, shape: shape, count: number, shading: shading))
+        for color in SetProperties.Value.all {
+            for shape in SetProperties.Value.all {
+                for shading in SetProperties.Value.all {
+                    for count in SetProperties.Value.all {
+                        cards.append(Card(colorValue: color, shapeValue: shape, shadingValue: shading, countValue: count))
                     }
                 }
             }

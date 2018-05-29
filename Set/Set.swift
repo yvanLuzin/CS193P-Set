@@ -26,22 +26,17 @@ class Set {
         }
     }
 
-    ///TODO: Refactor so it doesn't look like ass
     func matchCard() {
-
-        var matchingResults = [Int]()
-
         for feature in SetProperties.Feature.all {
             let amountOfMatchedFeatures = selectedCards.filter({ $0[feature] == selectedCards.first?[feature] }).count
-            matchingResults.append(amountOfMatchedFeatures)
+            guard amountOfMatchedFeatures != 2 else {
+                score -= 5
+                return
+            }
         }
 
-        if matchingResults.contains(2) {
-            score -= 5
-        } else {
-            matchedCards += selectedCards
-            score += 3
-        }
+        matchedCards += selectedCards
+        score += 3
     }
 
     /// BUG: You can select already selected card after it was matched

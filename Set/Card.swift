@@ -60,3 +60,38 @@ struct Card: Hashable {
         }
     }
 }
+
+
+extension Card: CustomStringConvertible {
+    var description: String {
+        var countString: String {
+            switch count.value {
+            case .first: return "1"
+            case .second: return "2"
+            case .third: return "3"
+            }
+        }
+        var colorString: String {
+            switch color.value {
+            case .first: return "red"
+            case .second: return "yellow"
+            case .third: return "blue"
+            }
+        }
+        var shapeString: String {
+            switch shape.value {
+            case .first: return "triangle"
+            case .second: return "circle"
+            case .third: return "square"
+            }
+        }
+        var shadingString: String {
+            switch shading.value {
+            case .first: return "solid"
+            case .second: return "outlined"
+            case .third: return "stripped"
+            }
+        }
+        return "\(countString ) \(colorString) \(shadingString) \(shapeString)"
+    }
+}

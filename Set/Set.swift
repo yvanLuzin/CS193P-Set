@@ -26,7 +26,7 @@ class Set {
         }
     }
 
-    func matchCard() {
+    private func matchCard() {
         for feature in SetProperties.Feature.all {
             let amountOfMatchedFeatures = selectedCards.filter({ $0[feature] == selectedCards.first?[feature] }).count
             guard amountOfMatchedFeatures != 2 else {

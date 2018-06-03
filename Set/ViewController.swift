@@ -37,10 +37,8 @@ class ViewController: UIViewController {
     @IBAction func dealThreeMoreCards(_ sender: UIButton) {
         if isMatched {
             game.replaceCards()
-            print("replace")
         } else {
             game.dealCards(3)
-            print("deal")
         }
         updateViewFromModel()
     }
@@ -137,8 +135,6 @@ class ViewController: UIViewController {
             let card = game.cardsBeingPlayed[index]
             setButtonAppearance(card, for: button)
         }
-
-        ///TODO: move code removing empty cards here
 
         scoreLabel.text = "Score: \(game.score)"
         dealThreeMoreCardsButton.isEnabled = isBoardHaveEnoughSpace || isMatched

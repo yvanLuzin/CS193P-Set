@@ -22,15 +22,12 @@ class SetCardView: UIView {
         UIColor.white.setFill()
         roundedRect.fill()
 
-        //TODO: would beed another subview for multiple shapes
+        subviews.forEach { $0.removeFromSuperview() }
+
+        //TODO: would need another subview for multiple shapes??
         let figure = Figure(frame: bounds, color: color, shape: shape, shading: shading)
         addSubview(figure)
 
-//        let label = UILabel(frame: bounds)
-//        label.numberOfLines = 3
-//        label.adjustsFontSizeToFitWidth = true
-//        label.text = textRepresentation
-//        addSubview(label)
     }
 
     override init(frame: CGRect) {
@@ -43,14 +40,6 @@ class SetCardView: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-//    private func configureColor(_ color: SetProperties.Value) -> UIColor {
-//        switch color {
-//        case .first: return
-//        case .second: return
-//        case .third: return
-//        }
-//    }
 
     class Figure: UIView {
         var color: UIColor?
@@ -68,12 +57,14 @@ class SetCardView: UIView {
             figure.addLine(to: CGPoint(x: 0, y: oneThirdHeight*2))
             figure.addLine(to: CGPoint(x: oneThirdWidth, y: oneThirdHeight))
             figure.close()
+            figure.lineWidth = lineWidth
 
             return figure
         }
 
         private func drawOval(in rect: CGRect) -> UIBezierPath {
             let figure = UIBezierPath(ovalIn: rect)
+            figure.lineWidth = lineWidth
             return figure
         }
 
@@ -87,6 +78,7 @@ class SetCardView: UIView {
             figure.addLine(to: CGPoint(x: halfWidth, y: rect.height))
             figure.addLine(to: CGPoint(x: 0, y: halfHeight))
             figure.close()
+            figure.lineWidth = lineWidth
 
             return figure
         }
@@ -97,12 +89,11 @@ class SetCardView: UIView {
                 case .squiggle: return drawSquiggle(in: rect)
                 case .oval: return drawOval(in: rect)
                 case .diamond: return drawDiamond(in: rect)
+                }
             }
-        }
 
             color?.setFill()
             color?.setStroke()
-            figure.lineWidth = 5.0
 
             if shading == .solid {
                 figure.fill()
@@ -128,6 +119,10 @@ class SetCardView: UIView {
 }
 
 extension SetCardView {
+    private static var lineWidth: CGFloat {
+        return 3.0
+    }
+
     enum Shape {
         case diamond, squiggle, oval
     }

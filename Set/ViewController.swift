@@ -22,10 +22,10 @@ class ViewController: UIViewController {
 
     @IBOutlet var playingFieldView: UIView! {
         didSet {
-            let cellSize = CGSize(width: playingFieldView.frame.width/4, height: playingFieldView.frame.width/4)
+            let cellSize = CGSize(width: playingFieldView.bounds.width/4, height: playingFieldView.bounds.width/4)
             let grid = Grid(layout: .fixedCellSize(cellSize), frame: playingFieldView.bounds)
 
-            for i in 1...13 {
+            for i in 1...12 {
                 if let gridFrame = grid[i-1] {
                     playingFieldView.addSubview( SetCardView(frame: gridFrame) )
                 }
@@ -34,11 +34,11 @@ class ViewController: UIViewController {
     }
 
     @IBAction func dealThreeMoreCards(_ sender: UIButton) {
-        if isMatched {
-            game.replaceCards()
-        } else {
-            game.dealCards(3)
-        }
+//        if isMatched {
+//            game.replaceCards()
+//        } else {
+//            game.dealCards(3)
+//        }
         updateViewFromModel()
     }
 
@@ -48,8 +48,32 @@ class ViewController: UIViewController {
     }
 
     private func updateViewFromModel() {
-        for card in playingFieldView.subviews {
-            
+        for index in game.cardsBeingPlayed.indices {
+            let card = game.cardsBeingPlayed[index]
+            if let cardView = (playingFieldView.subviews[index] as? SetCardView) {
+                cardView.textRepresentation = card.description
+
+                switch card[.color] {
+                    case .first: cardView.color = SetCardView.Color.red
+                    case .second: cardView.color = SetCardView.Color.green
+                    case .third: cardView.color = SetCardView.Color.purple
+                }
+                switch card[.shape] {
+                    case .first: cardView.shape = SetCardView.Shape.diamond
+                    case .second: cardView.shape = SetCardView.Shape.squiggle
+                    case .third: cardView.shape = SetCardView.Shape.oval
+                }
+                switch card[.shading] {
+                    case .first: cardView.shading = SetCardView.Shading.open
+                    case .second: cardView.shading = SetCardView.Shading.solid
+                    case .third: cardView.shading = SetCardView.Shading.striped
+                }
+                switch card[.count] {
+                    case .first: cardView.count = SetCardView.Count.one.rawValue
+                    case .second: cardView.count = SetCardView.Count.two.rawValue
+                    case .third: cardView.count = SetCardView.Count.three.rawValue
+                }
+            }
         }
         scoreLabel.text = "Score: \(game.score)"
     }
@@ -58,9 +82,13 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         updateViewFromModel()
 
+        for card in playingFieldView.subviews {
+            print((card as! SetCardView).textRepresentation)
+        }
+
 //        playingFieldView.addSubview(SetCardView(frame: CGRect(x: 0, y: 0, width: playingFieldView.frame.width/2, height: 120)))
 //        playingFieldView.addSubview(SetCardView(frame: CGRect(x: playingFieldView.frame.width/2, y: 0, width: playingFieldView.frame.width/2, height: 120)))
-        print(playingFieldView.frame)
+//        print(playingFieldView.frame)
     }
 
     override func didReceiveMemoryWarning() {

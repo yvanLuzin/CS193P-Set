@@ -18,4 +18,11 @@ class PlayingFieldView: UIView {
     }
     */
 
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        //put grid initialization here
+        //grid works fine when simulating same device as in storyboard
+        //require to change bounds manually?
+    }
+
 }

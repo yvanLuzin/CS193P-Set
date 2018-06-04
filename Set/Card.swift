@@ -74,8 +74,8 @@ extension Card: CustomStringConvertible {
         var colorString: String {
             switch color.value {
             case .first: return "red"
-            case .second: return "yellow"
-            case .third: return "blue"
+            case .second: return "green"
+            case .third: return "purple"
             }
         }
         var shapeString: String {

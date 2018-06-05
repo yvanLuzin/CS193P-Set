@@ -16,6 +16,8 @@ class SetCardView: UIView {
     var shading: Shading!
     var count: Int!
 
+    var gridBounds: CGRect?
+
     override func draw(_ rect: CGRect) {
         let roundedRect = UIBezierPath(roundedRect: bounds, cornerRadius: 15.0)
         roundedRect.addClip()
@@ -27,7 +29,6 @@ class SetCardView: UIView {
         //TODO: would need another subview for multiple shapes??
         let figure = Figure(frame: bounds, color: color, shape: shape, shading: shading)
         addSubview(figure)
-
     }
 
     override init(frame: CGRect) {
@@ -42,9 +43,9 @@ class SetCardView: UIView {
     }
 
     class Figure: UIView {
-        var color: UIColor?
+        var color: UIColor
         var shape: Shape
-        var shading: Shading?
+        var shading: Shading
 
         private func drawSquiggle(in rect: CGRect) -> UIBezierPath {
             let oneThirdWidth = rect.width/3
@@ -92,8 +93,8 @@ class SetCardView: UIView {
                 }
             }
 
-            color?.setFill()
-            color?.setStroke()
+            color.setFill()
+            color.setStroke()
 
             if shading == .solid {
                 figure.fill()
@@ -110,6 +111,7 @@ class SetCardView: UIView {
             super.init(frame: frame)
             self.isOpaque = false
             self.backgroundColor = UIColor.clear
+            self.contentMode = .redraw
         }
 
         required init?(coder aDecoder: NSCoder) {

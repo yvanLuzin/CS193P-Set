@@ -81,6 +81,6 @@ class Set {
     }
 
     init() {
-        dealCards(12)
+        dealCards(81)
     }
 }

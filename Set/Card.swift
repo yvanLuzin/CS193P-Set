@@ -80,16 +80,16 @@ extension Card: CustomStringConvertible {
         }
         var shapeString: String {
             switch shape.value {
-            case .first: return "triangle"
-            case .second: return "circle"
-            case .third: return "square"
+            case .first: return "diamond"
+            case .second: return "squiggle"
+            case .third: return "oval"
             }
         }
         var shadingString: String {
             switch shading.value {
             case .first: return "solid"
-            case .second: return "outlined"
-            case .third: return "stripped"
+            case .second: return "striped"
+            case .third: return "open"
             }
         }
         return "\(countString ) \(colorString) \(shadingString) \(shapeString)"

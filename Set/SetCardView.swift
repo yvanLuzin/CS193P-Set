@@ -21,20 +21,21 @@ class SetCardView: UIView {
     override func draw(_ rect: CGRect) {
         let roundedRect = UIBezierPath(
             roundedRect: bounds.insetBy(dx: (bounds.width+bounds.height)*0.008, dy: (bounds.width+bounds.height)*0.008),
-            cornerRadius: (bounds.width+bounds.height)*0.04)
+            cornerRadius: paddingRatio)
         roundedRect.addClip()
         UIColor.white.setFill()
         roundedRect.fill()
 
-        subviews.forEach { $0.removeFromSuperview() }
+//        subviews.forEach { $0.removeFromSuperview() }
 
-        let label = UILabel(frame: bounds)
-        label.text = textRepresentation
-        label.numberOfLines = 0
-        label.sizeToFit()
-        label.adjustsFontSizeToFitWidth = true
-        addSubview(label)
+//        let label = UILabel(frame: bounds)
+//        label.text = textRepresentation
+//        label.numberOfLines = 0
+//        label.sizeToFit()
+//        label.adjustsFontSizeToFitWidth = true
+//        addSubview(label)
 
+        drawShape(shape, count: count)
 
 
         //TODO: would need another subview for multiple shapes??
@@ -42,15 +43,63 @@ class SetCardView: UIView {
 //        addSubview(figure)
     }
 
+    private func drawShape(_ shape: Shape, count: Int) {
+        let paddedRect = bounds.insetBy(dx: paddingRatio, dy: paddingRatio)
+
+        for i in 1...count {
+            let ratio = CGFloat(i)
+            let dimension = paddedRect.size.height / CGFloat(count)
+//            let heightRatio = paddedRect.size.height / ratio
+            let verticalPosition = paddedRect.minY + dimension * (ratio - 1)
+
+            var drawArea = CGRect(
+                x: paddedRect.minX,
+                y: verticalPosition,
+                width: paddedRect.size.width,
+                height: dimension)
+            //make rect with coordinates
+            //draw figure in rect
+            //do rest of drawing
+            var figure: UIBezierPath {
+                return UIBezierPath(rect: drawArea)
+                switch shape {
+                case .oval:
+                    return drawOval(in: drawArea)
+                case .diamond:
+                     return drawDiamond(in: drawArea)
+                case .squiggle:
+                    return drawSquiggle(in: drawArea)
+                }
+            }
+
+//            color.setFill()
+//            color.setStroke()
+//
+//            switch shading {
+//            case .solid: figure.fill()
+//            default: figure.stroke()
+//            }
+            switch i {
+            case 1:
+                UIColor.black.setStroke()
+            case 2:
+                UIColor.red.setStroke()
+            default:
+                UIColor.green.setStroke()
+            }
+            figure.stroke()
+        }
+    }
+
     private func drawSquiggle(in rect: CGRect) -> UIBezierPath {
         let oneThirdWidth = rect.width/3
         let oneThirdHeight = rect.height/3
         let figure = UIBezierPath()
-        figure.move(to: CGPoint(x: 0, y: 0))
+        figure.move(to: CGPoint(x: rect.origin.x, y: rect.origin.y))
         figure.addLine(to: CGPoint(x: rect.width, y: oneThirdHeight))
         figure.addLine(to: CGPoint(x: oneThirdWidth*2, y: oneThirdHeight*2))
         figure.addLine(to: CGPoint(x: rect.width, y: rect.height))
-        figure.addLine(to: CGPoint(x: 0, y: oneThirdHeight*2))
+        figure.addLine(to: CGPoint(x: rect.origin.x, y: oneThirdHeight*2))
         figure.addLine(to: CGPoint(x: oneThirdWidth, y: oneThirdHeight))
         figure.close()
         return figure
@@ -62,14 +111,14 @@ class SetCardView: UIView {
     }
 
     private func drawDiamond(in rect: CGRect) -> UIBezierPath {
-        let halfWidth = rect.width/2
-        let halfHeight = rect.height/2
+        let halfWidth = rect.size.width/2
+        let halfHeight = rect.size.height/2
 
         let figure = UIBezierPath()
-        figure.move(to: CGPoint(x: halfWidth, y: 0))
-        figure.addLine(to: CGPoint(x: rect.width, y: halfHeight))
-        figure.addLine(to: CGPoint(x: halfWidth, y: rect.height))
-        figure.addLine(to: CGPoint(x: 0, y: halfHeight))
+        figure.move(to: CGPoint(x: halfWidth, y: rect.origin.y))
+        figure.addLine(to: CGPoint(x: rect.size.width, y: halfHeight))
+        figure.addLine(to: CGPoint(x: halfWidth, y: rect.size.height))
+        figure.addLine(to: CGPoint(x: rect.origin.x, y: halfHeight))
         figure.close()
         return figure
     }
@@ -212,6 +261,10 @@ class SetCardView: UIView {
 extension SetCardView {
     var lineWidth: CGFloat {
         return 3.0
+    }
+
+    var paddingRatio: CGFloat {
+        return (bounds.width+bounds.height)*0.04
     }
 
     var verticalPadding: CGFloat {

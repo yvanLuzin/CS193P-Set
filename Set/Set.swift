@@ -81,6 +81,6 @@ class Set {
     }
 
     init() {
-        dealCards(81)
+        dealCards(SetConstants.startingCardCount)
     }
 }

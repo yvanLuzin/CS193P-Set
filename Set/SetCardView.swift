@@ -19,7 +19,9 @@ class SetCardView: UIView {
     var gridBounds: CGRect?
 
     override func draw(_ rect: CGRect) {
-        let roundedRect = UIBezierPath(roundedRect: bounds, cornerRadius: 15.0)
+        let roundedRect = UIBezierPath(
+            roundedRect: bounds.insetBy(dx: (bounds.width+bounds.height)*0.008, dy: (bounds.width+bounds.height)*0.008),
+            cornerRadius: (bounds.width+bounds.height)*0.04)
         roundedRect.addClip()
         UIColor.white.setFill()
         roundedRect.fill()

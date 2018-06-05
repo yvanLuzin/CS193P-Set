@@ -10,9 +10,11 @@ import UIKit
 
 class PlayingFieldView: UIView {
     lazy var grid: Grid = configureGrid()
+
     var numberOfCardsOnField: Int {
         return subviews.indices.count
     }
+
     var numberOfCardsToDraw: Int = SetConstants.startingCardCount {
         didSet {
             setNeedsDisplay()
@@ -37,6 +39,7 @@ class PlayingFieldView: UIView {
                 return CGSize(width: self.bounds.width/9, height: self.bounds.height/9)
             }
         }
+
         return Grid(layout: .fixedCellSize(cardSize), frame: self.bounds)
     }
 

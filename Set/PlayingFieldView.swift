@@ -15,7 +15,7 @@ class PlayingFieldView: UIView {
         return subviews.indices.count
     }
 
-    var numberOfCardsToDraw: Int = SetConstants.startingCardCount {
+    var numberOfCardsToDraw: Int = 12 {
         didSet {
             setNeedsDisplay()
             setNeedsLayout()
@@ -43,8 +43,18 @@ class PlayingFieldView: UIView {
         return Grid(layout: .fixedCellSize(cardSize), frame: self.bounds)
     }
 
-    override func draw(_ rect: CGRect) {
-        for i in 0..<numberOfCardsToDraw {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setup(12)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setup(12)
+    }
+
+    func setup(_ count: Int) {
+        for i in 0..<count {
             if let gridFrame = grid[i] {
                 addSubview( SetCardView(frame: gridFrame) )
             }
@@ -58,5 +68,4 @@ class PlayingFieldView: UIView {
             subviews[index].frame = grid[index]!
         }
     }
-
 }

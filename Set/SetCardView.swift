@@ -49,12 +49,19 @@ class SetCardView: UIView {
         debugLine.stroke()
 
         var widestSide: CGFloat {
-            return paddedRect.size.height > paddedRect.size.width ? paddedRect.size.height : paddedRect.size.width
+//            return paddedRect.size.height > paddedRect.size.width ? paddedRect.size.height : paddedRect.size.width
+            return paddedRect.size.height
+        }
+
+        var isHorizontal: Bool {
+            return paddedRect.size.height > paddedRect.size.width
         }
 
         for i in 1...count {
             let ratio = CGFloat(i)
-            let dimension = widestSide / CGFloat(3)
+            var dimension: CGFloat {
+                return isHorizontal ? widestSide / CGFloat(3) : paddedRect.size.height
+            }
             let rectCenter = paddedRect.minY + (widestSide / 2)
             var verticalPosition: CGFloat {
                 switch count {
@@ -64,11 +71,20 @@ class SetCardView: UIView {
                 default: fatalError("Count can't be more than 3")
                 }
             }
+            var horizontalPosition: CGFloat {
+                switch count {
+                case 1: return paddedRect.minX + (paddedRect.size.width / 2) - (dimension/2)
+                case 2: return paddedRect.minX + (paddedRect.size.width / 2) - dimension * CGFloat(i-1)
+                case 3: return paddedRect.minX + (paddedRect.size.width / 2)
+                default: fatalError("Count can't be more than 3")
+                }
+            }
             let horizontalCenter = paddedRect.minX + (paddedRect.size.width - dimension)/2
+            let verticalCenter = paddedRect.minX + (paddedRect.size.height - dimension)/2
 
             var drawArea = CGRect(
-                x: horizontalCenter ,
-                y: verticalPosition,
+                x: isHorizontal ? horizontalCenter : horizontalPosition,
+                y: isHorizontal ? verticalPosition : verticalCenter,
                 width: dimension,
                 height: dimension)
             //make rect with coordinates
@@ -85,7 +101,6 @@ class SetCardView: UIView {
                     return drawSquiggle(in: drawArea)
                 }
             }
-
 //            color.setFill()
 //            color.setStroke()
 //

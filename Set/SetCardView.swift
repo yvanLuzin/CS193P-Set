@@ -37,7 +37,6 @@ class SetCardView: UIView {
 
         drawShape(shape, count: count)
 
-
         //TODO: would need another subview for multiple shapes??
 //        let figure = Figure(frame: bounds, color: color, shape: shape, shading: shading)
 //        addSubview(figure)
@@ -45,17 +44,32 @@ class SetCardView: UIView {
 
     private func drawShape(_ shape: Shape, count: Int) {
         let paddedRect = bounds.insetBy(dx: paddingRatio, dy: paddingRatio)
+        let debugLine = UIBezierPath(rect: paddedRect)
+        UIColor.cyan.setStroke()
+        debugLine.stroke()
+
+        var widestSide: CGFloat {
+            return paddedRect.size.height > paddedRect.size.width ? paddedRect.size.height : paddedRect.size.width
+        }
 
         for i in 1...count {
             let ratio = CGFloat(i)
-            let dimension = paddedRect.size.height / CGFloat(count)
-//            let heightRatio = paddedRect.size.height / ratio
-            let verticalPosition = paddedRect.minY + dimension * (ratio - 1)
+            let dimension = widestSide / CGFloat(3)
+            let rectCenter = paddedRect.minY + (widestSide / 2)
+            var verticalPosition: CGFloat {
+                switch count {
+                case 1: return rectCenter - dimension / 2
+                case 2: return rectCenter - dimension * CGFloat(i-1)
+                case 3: return paddedRect.minY + dimension * (ratio - 1)
+                default: fatalError("Count can't be more than 3")
+                }
+            }
+            let horizontalCenter = paddedRect.minX + (paddedRect.size.width - dimension)/2
 
             var drawArea = CGRect(
-                x: paddedRect.minX,
+                x: horizontalCenter ,
                 y: verticalPosition,
-                width: paddedRect.size.width,
+                width: dimension,
                 height: dimension)
             //make rect with coordinates
             //draw figure in rect

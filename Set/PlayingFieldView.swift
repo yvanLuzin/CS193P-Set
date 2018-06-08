@@ -45,12 +45,12 @@ class PlayingFieldView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setup(12)
+        setup(1)
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        setup(12)
+        setup(1)
     }
 
     func setup(_ count: Int) {

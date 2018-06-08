@@ -76,7 +76,7 @@ class Set {
         cardsBeingPlayed.removeAll()
         selectedCards.removeAll()
         matchedCards.removeAll()
-        dealCards(12)
+        dealCards(1)
         score = 0
     }
 

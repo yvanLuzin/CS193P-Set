@@ -27,9 +27,6 @@ class SetCardView: UIView {
         roundedRect.fill()
 
         let paddedRect = bounds.insetBy(dx: paddingRatio, dy: paddingRatio)
-        let debugLine = UIBezierPath(rect: paddedRect)
-        UIColor.cyan.setStroke()
-        debugLine.stroke()
 
         var isHorizontal: Bool {
             return paddedRect.size.height < paddedRect.size.width
@@ -41,6 +38,8 @@ class SetCardView: UIView {
             let oneThird = widestSide / 3
             return oneThird > shortestSide ? shortestSide : oneThird
         }
+
+        var shortSide = minimalSideSize / 2
 
         let boundsCenter = CGPoint(
             x: paddedRect.origin.x + paddedRect.width / 2,
@@ -62,22 +61,18 @@ class SetCardView: UIView {
 
             var verticalPosition: CGFloat {
                 if isHorizontal {
-                    return boundsCenter.y - minimalSideSize / 2
+                    return boundsCenter.y - shortSide / 2
                 }
                 switch count {
-                case 1: return boundsCenter.y - minimalSideSize / 2
-                case 2: return boundsCenter.y - minimalSideSize * (CGFloat(amount-1))
-                case 3: return boundsCenter.y - minimalSideSize * 1.5 + minimalSideSize * (CGFloat(amount-1))
+                case 1: return boundsCenter.y - shortSide / 2
+                case 2: return boundsCenter.y - shortSide * (CGFloat(amount-1))
+                case 3: return boundsCenter.y - shortSide * 1.5 + shortSide * (CGFloat(amount-1))
                 default:
                     fatalError("Count can't be more than 3, current value: \(count)")
                 }
             }
 
-            let drawArea = CGRect(x: horizontalPosition, y: verticalPosition, width: minimalSideSize, height: minimalSideSize).insetBy(dx: minimalSideSize*0.04, dy: minimalSideSize*0.04)
-
-            var debugBounds = UIBezierPath(rect: drawArea)
-            UIColor.cyan.setStroke()
-            debugBounds.stroke()
+            let drawArea = CGRect(x: horizontalPosition, y: verticalPosition, width: minimalSideSize, height: shortSide).insetBy(dx: minimalSideSize*0.04, dy: minimalSideSize*0.04)
 
             var figure: UIBezierPath {
                 switch shape! {
@@ -93,50 +88,50 @@ class SetCardView: UIView {
             figure.fill()
             figure.stroke()
         }
-
-//        subviews.forEach { $0.removeFromSuperview() }
-
-//        let label = UILabel(frame: bounds)
-//        label.text = textRepresentation
-//        label.numberOfLines = 0
-//        label.sizeToFit()
-//        label.adjustsFontSizeToFitWidth = true
-//        addSubview(label)
     }
 
     private func drawSquiggle(in rect: CGRect) -> UIBezierPath {
-        let oneThirdWidth = rect.width/3
-        let oneThirdHeight = rect.height/3
+        let oneThirdX = rect.minX + (rect.width)/3
+        let twoThirdX = rect.minX + (rect.width)/1.5
+        let ratio = (rect.size.width + rect.size.height) * 0.1
+
         let figure = UIBezierPath()
-        figure.move(to: CGPoint(x: rect.origin.x, y: rect.origin.y))
-        figure.addLine(to: CGPoint(x: rect.width, y: oneThirdHeight))
-        figure.addLine(to: CGPoint(x: oneThirdWidth*2, y: oneThirdHeight*2))
-        figure.addLine(to: CGPoint(x: rect.width, y: rect.height))
-        figure.addLine(to: CGPoint(x: rect.origin.x, y: oneThirdHeight*2))
-        figure.addLine(to: CGPoint(x: oneThirdWidth, y: oneThirdHeight))
+        figure.move(to: CGPoint(x: oneThirdX, y: rect.minY))
+        figure.addCurve(to: CGPoint(x: twoThirdX, y: rect.midY-ratio),
+                        controlPoint1: CGPoint(x: twoThirdX-ratio, y: rect.minY),
+                        controlPoint2: CGPoint(x: oneThirdX+ratio, y: rect.midY-ratio))
+        figure.addCurve(to: CGPoint(x: rect.maxX, y: rect.minY),
+                        controlPoint1: CGPoint(x: rect.maxX-ratio, y: rect.midY-ratio),
+                        controlPoint2: CGPoint(x: twoThirdX+ratio, y: rect.minY))
+        figure.addCurve(to: CGPoint(x: twoThirdX, y: rect.maxY),
+                        controlPoint1: CGPoint(x: rect.maxX+ratio, y: rect.midY),
+                        controlPoint2: CGPoint(x: rect.maxX-ratio, y: rect.maxY))
+        figure.addCurve(to: CGPoint(x: oneThirdX, y: rect.midY+ratio),
+                        controlPoint1: CGPoint(x: twoThirdX-ratio, y: rect.maxY),
+                        controlPoint2: CGPoint(x: twoThirdX-ratio, y: rect.midY+ratio))
+        figure.addCurve(to: CGPoint(x: rect.minX, y: rect.maxY),
+                        controlPoint1: CGPoint(x: rect.minX+ratio, y: rect.midY+ratio),
+                        controlPoint2: CGPoint(x: oneThirdX-ratio, y: rect.maxY))
+        figure.addCurve(to: CGPoint(x: oneThirdX, y: rect.minY),
+                        controlPoint1: CGPoint(x: rect.minX-ratio, y: rect.midY-ratio),
+                        controlPoint2: CGPoint(x: rect.midX-ratio, y: rect.minY))
         figure.close()
         return figure
     }
 
     private func drawOval(in rect: CGRect) -> UIBezierPath {
-//        let figure = UIBezierPath(ovalIn: rect)
-//        return figure
-        let smallRect = CGRect(x: rect.origin.x, y: rect.origin.y+rect.size.height/4, width: rect.size.width, height: rect.size.height/2)
-
-        let figure = UIBezierPath(roundedRect: smallRect, cornerRadius: 14.0)
+        let figure = UIBezierPath(roundedRect: rect, cornerRadius: 14.0)
         return figure
     }
 
     private func drawDiamond(in rect: CGRect) -> UIBezierPath {
-        let halfWidth = rect.size.width/2
-        let halfHeight = rect.size.height/2
-
         let figure = UIBezierPath()
-        figure.move(to: CGPoint(x: halfWidth, y: rect.origin.y))
-        figure.addLine(to: CGPoint(x: rect.size.width, y: halfHeight))
-        figure.addLine(to: CGPoint(x: halfWidth, y: rect.size.height))
-        figure.addLine(to: CGPoint(x: rect.origin.x, y: halfHeight))
+        figure.move(to: CGPoint(x: rect.midX, y: rect.minY))
+        figure.addLine(to: CGPoint(x: rect.maxX, y: rect.midY))
+        figure.addLine(to: CGPoint(x: rect.midX, y: rect.maxY))
+        figure.addLine(to: CGPoint(x: rect.minX, y: rect.midY))
         figure.close()
+
         return figure
     }
 
@@ -182,8 +177,8 @@ extension SetCardView {
     }
 
     struct Color {
-        static var red = #colorLiteral(red: 1, green: 0.2043219659, blue: 0.1832181957, alpha: 1)
-        static var green = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
-        static var purple = #colorLiteral(red: 0.7055400032, green: 0.05926413926, blue: 0.5150790473, alpha: 1)
+        static var red = #colorLiteral(red: 1, green: 0.233825969, blue: 0.4614375874, alpha: 1)
+        static var green = #colorLiteral(red: 0.4215252755, green: 0.7735763008, blue: 0.2147679271, alpha: 1)
+        static var purple = #colorLiteral(red: 0.5041278131, green: 0.3157204778, blue: 0.7055400032, alpha: 1)
     }
 }

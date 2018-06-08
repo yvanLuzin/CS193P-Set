@@ -84,23 +84,23 @@ class SetCardView: UIView {
 
             figure.addClip()
 
-            switch shading! {
-            case .open: figure.stroke()
-            case .solid: figure.fill()
-            case .striped:
-                figure.stroke()
+            if shading! == .striped {
                 let line = UIBezierPath()
                 line.lineWidth = lineWidth/2
-
                 for singleLine in stride(from: Float(rect.minX), to: Float(rect.maxX), by: Float(lineWidth*1.5)) {
                     line.move(to: CGPoint(x: rect.minX+CGFloat(singleLine), y: rect.minY))
                     line.addLine(to: CGPoint(x: rect.minX+CGFloat(singleLine), y: rect.maxY))
                 }
-
                 line.stroke()
             }
+
             context?.restoreGState()
-            figure.stroke()
+
+            if !(shading! == .open) {
+                figure.stroke()
+            } else {
+                figure.fill()
+            }
         }
     }
 

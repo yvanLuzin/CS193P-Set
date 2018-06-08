@@ -24,7 +24,20 @@ class ViewController: UIViewController {
 
     @IBOutlet var dealThreeMoreCardsButton: UIButton!
 
-    @IBOutlet var playingFieldView: PlayingFieldView!
+    @IBOutlet var playingFieldView: PlayingFieldView! {
+        didSet {
+
+        }
+    }
+//    {
+//        didSet {
+//            for view in playingFieldView.subviews {
+//                let card = view as? SetCardView
+//                let tapGesture = UITapGestureRecognizer(target: self, action: #selector(touchCard(sender:)))
+//                card?.addGestureRecognizer(tapGesture)
+//            }
+//        }
+//    }
 
     @IBAction func dealThreeMoreCards(_ sender: UIButton) {
         if isMatched {
@@ -45,12 +58,22 @@ class ViewController: UIViewController {
         updateViewFromModel()
     }
 
+    @objc func touchCard(sender: UITapGestureRecognizer) {
+//        print(self)
+//        print(sender.view)
+//        if let card = sender.view as? SetCardView {
+//            print(playingFieldView.subviews.index(of: sender.view!)!)
+//        }
+//        print(playingFieldView.subviews)
+    }
+
     private func updateViewFromModel() {
         for index in game.cardsBeingPlayed.indices {
             let card = game.cardsBeingPlayed[index]
-            print(playingFieldView.subviews.isEmpty)
+//            print(playingFieldView.subviews.isEmpty)
             if let cardView = (playingFieldView.subviews[index] as? SetCardView) {
                 cardView.textRepresentation = card.description
+                cardView.identifier = card.hashValue
 
                 switch card[.color] {
                     case .first: cardView.color = SetCardView.Color.red
@@ -75,9 +98,9 @@ class ViewController: UIViewController {
             }
         }
 
-        for card in playingFieldView.subviews {
-            print((card as! SetCardView).textRepresentation)
-        }
+//        for card in playingFieldView.subviews {
+//            print((card as! SetCardView).textRepresentation)
+//        }
 
         dealThreeMoreCardsButton.isEnabled = game.deck.cards.count > 0
         scoreLabel.text = "Score: \(game.score)"

@@ -15,6 +15,8 @@ class SetCardView: UIView {
     var color: UIColor!
     var shading: Shading!
     var count: Int!
+    var identifier: Int!
+    private var vc = ViewController()
 
     var gridBounds: CGRect?
 
@@ -158,7 +160,14 @@ class SetCardView: UIView {
         self.isOpaque = false
         self.backgroundColor = UIColor.clear
         self.contentMode = .redraw
+
+        let tapGesture = UITapGestureRecognizer(target: vc, action: #selector(vc.touchCard(sender:)) )
+        self.addGestureRecognizer(tapGesture)
     }
+
+//    @objc func touchCard() {
+//        print(self.textRepresentation)
+//    }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

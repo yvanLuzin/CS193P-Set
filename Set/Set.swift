@@ -58,6 +58,7 @@ class Set {
         if selectedCards.count == 3 {
             matchCard()
         }
+        print(selectedCards)
     }
 
     func replaceCards() {

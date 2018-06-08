@@ -45,6 +45,8 @@ class SetCardView: UIView {
             y: paddedRect.origin.y + paddedRect.height / 2)
 
         for amount in 1...count {
+            let context = UIGraphicsGetCurrentContext()
+            context?.saveGState()
             var horizontalPosition: CGFloat {
                 if !isHorizontal { return boundsCenter.x - minimalSideSize / 2 }
                 switch count {
@@ -80,15 +82,25 @@ class SetCardView: UIView {
                 }
             }
 
+            figure.addClip()
+
             switch shading! {
             case .open: figure.stroke()
             case .solid: figure.fill()
             case .striped:
                 figure.stroke()
-                color.withAlphaComponent(CGFloat(0.5)).setFill()
-                figure.fill()
-            }
+                let line = UIBezierPath()
+                line.lineWidth = lineWidth/2
 
+                for singleLine in stride(from: Float(rect.minX), to: Float(rect.maxX), by: Float(lineWidth*1.5)) {
+                    line.move(to: CGPoint(x: rect.minX+CGFloat(singleLine), y: rect.minY))
+                    line.addLine(to: CGPoint(x: rect.minX+CGFloat(singleLine), y: rect.maxY))
+                }
+
+                line.stroke()
+            }
+            context?.restoreGState()
+            figure.stroke()
         }
     }
 
@@ -120,6 +132,7 @@ class SetCardView: UIView {
         figure.close()
         figure.lineJoinStyle = .round
         figure.lineWidth = lineWidth
+
         return figure
     }
 

@@ -26,30 +26,27 @@ class SetCardView: UIView {
         UIColor.white.setFill()
         roundedRect.fill()
 
-        let paddedRect = bounds.insetBy(dx: paddingRatio, dy: paddingRatio)
+        color.setFill()
+        color.setStroke()
 
+        let paddedRect = bounds.insetBy(dx: paddingRatio, dy: paddingRatio)
         var isHorizontal: Bool {
             return paddedRect.size.height < paddedRect.size.width
         }
-
         var minimalSideSize: CGFloat {
             let widestSide = isHorizontal ? paddedRect.size.width : paddedRect.size.height
             let shortestSide = isHorizontal ? paddedRect.size.height : paddedRect.size.width
             let oneThird = widestSide / 3
             return oneThird > shortestSide ? shortestSide : oneThird
         }
-
         var shortSide = minimalSideSize / 2
-
         let boundsCenter = CGPoint(
             x: paddedRect.origin.x + paddedRect.width / 2,
             y: paddedRect.origin.y + paddedRect.height / 2)
 
         for amount in 1...count {
             var horizontalPosition: CGFloat {
-                if !isHorizontal {
-                    return boundsCenter.x - minimalSideSize / 2
-                }
+                if !isHorizontal { return boundsCenter.x - minimalSideSize / 2 }
                 switch count {
                 case 1: return boundsCenter.x - minimalSideSize / 2
                 case 2: return boundsCenter.x - minimalSideSize * (CGFloat(amount-1))
@@ -58,11 +55,8 @@ class SetCardView: UIView {
                     fatalError("Count can't be more than 3, current value: \(count)")
                 }
             }
-
             var verticalPosition: CGFloat {
-                if isHorizontal {
-                    return boundsCenter.y - shortSide / 2
-                }
+                if isHorizontal { return boundsCenter.y - shortSide / 2 }
                 switch count {
                 case 1: return boundsCenter.y - shortSide / 2
                 case 2: return boundsCenter.y - shortSide * (CGFloat(amount-1))
@@ -71,8 +65,12 @@ class SetCardView: UIView {
                     fatalError("Count can't be more than 3, current value: \(count)")
                 }
             }
-
-            let drawArea = CGRect(x: horizontalPosition, y: verticalPosition, width: minimalSideSize, height: shortSide).insetBy(dx: minimalSideSize*0.04, dy: minimalSideSize*0.04)
+            var drawArea = CGRect(x: horizontalPosition,
+                                  y: verticalPosition,
+                                  width: minimalSideSize,
+                                  height: shortSide)
+                .insetBy(dx: minimalSideSize*0.04,
+                         dy: minimalSideSize*0.04)
 
             var figure: UIBezierPath {
                 switch shape! {
@@ -82,11 +80,15 @@ class SetCardView: UIView {
                 }
             }
 
-            color.setFill()
-            color.setStroke()
+            switch shading! {
+            case .open: figure.stroke()
+            case .solid: figure.fill()
+            case .striped:
+                figure.stroke()
+                color.withAlphaComponent(CGFloat(0.5)).setFill()
+                figure.fill()
+            }
 
-            figure.fill()
-            figure.stroke()
         }
     }
 
@@ -116,11 +118,14 @@ class SetCardView: UIView {
                         controlPoint1: CGPoint(x: rect.minX-ratio, y: rect.midY-ratio),
                         controlPoint2: CGPoint(x: rect.midX-ratio, y: rect.minY))
         figure.close()
+        figure.lineJoinStyle = .round
+        figure.lineWidth = lineWidth
         return figure
     }
 
     private func drawOval(in rect: CGRect) -> UIBezierPath {
         let figure = UIBezierPath(roundedRect: rect, cornerRadius: 14.0)
+        figure.lineWidth = lineWidth
         return figure
     }
 
@@ -131,7 +136,7 @@ class SetCardView: UIView {
         figure.addLine(to: CGPoint(x: rect.midX, y: rect.maxY))
         figure.addLine(to: CGPoint(x: rect.minX, y: rect.midY))
         figure.close()
-
+        figure.lineWidth = lineWidth
         return figure
     }
 
@@ -149,7 +154,7 @@ class SetCardView: UIView {
 
 extension SetCardView {
     var lineWidth: CGFloat {
-        return 3.0
+        return paddingRatio*0.15
     }
 
     var paddingRatio: CGFloat {

@@ -9,7 +9,7 @@
 import UIKit
 
 struct SetConstants {
-    static var startingCardCount = 1
+    static var startingCardCount = 12
 }
 
 class ViewController: UIViewController {
@@ -41,7 +41,7 @@ class ViewController: UIViewController {
         game.newGame()
         playingFieldView.subviews.forEach { $0.removeFromSuperview() }
         playingFieldView.numberOfCardsToDraw = SetConstants.startingCardCount
-        playingFieldView.setup(1)
+        playingFieldView.setup(SetConstants.startingCardCount)
         updateViewFromModel()
     }
 

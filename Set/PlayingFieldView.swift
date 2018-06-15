@@ -43,10 +43,10 @@ class PlayingFieldView: UIView {
         return Grid(layout: .fixedCellSize(cardSize), frame: self.bounds)
     }
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setup(SetConstants.startingCardCount)
-    }
+//    override init(frame: CGRect) {
+//        super.init(frame: frame)
+//        setup(SetConstants.startingCardCount)
+//    }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)

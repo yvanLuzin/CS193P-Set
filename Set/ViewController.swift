@@ -24,12 +24,8 @@ class ViewController: UIViewController {
 
     @IBOutlet var dealThreeMoreCardsButton: UIButton!
 
-    @IBOutlet var playingFieldView: PlayingFieldView! {
-        didSet {
-
-        }
-    }
-//    {
+    @IBOutlet var playingFieldView: PlayingFieldView!
+//        {
 //        didSet {
 //            for view in playingFieldView.subviews {
 //                let card = view as? SetCardView
@@ -58,19 +54,30 @@ class ViewController: UIViewController {
         updateViewFromModel()
     }
 
-    @objc func touchCard(sender: UITapGestureRecognizer) {
+    func selectCard(from sender: UITapGestureRecognizer) {
+        print("hello")
+        print(playingFieldView?.subviews.isEmpty)
+    }
+
+//    @objc func touchCard(sender: UITapGestureRecognizer) {
+//        print("hello")
+//        print(playingFieldView?.subviews.isEmpty)
+//        if let cardView = (playingFieldView.subviews[index] as? SetCardView) {
+
+//        }
+//        print(view.subviews)
 //        print(self)
 //        print(sender.view)
-//        if let card = sender.view as? SetCardView {
+//        if let card = (sender.view as? SetCardView),  {
 //            print(playingFieldView.subviews.index(of: sender.view!)!)
 //        }
 //        print(playingFieldView.subviews)
-    }
+//    }
 
     private func updateViewFromModel() {
         for index in game.cardsBeingPlayed.indices {
             let card = game.cardsBeingPlayed[index]
-//            print(playingFieldView.subviews.isEmpty)
+            print(playingFieldView.subviews.isEmpty)
             if let cardView = (playingFieldView.subviews[index] as? SetCardView) {
                 cardView.textRepresentation = card.description
                 cardView.identifier = card.hashValue

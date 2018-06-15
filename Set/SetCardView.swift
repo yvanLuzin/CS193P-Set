@@ -16,7 +16,7 @@ class SetCardView: UIView {
     var shading: Shading!
     var count: Int!
     var identifier: Int!
-    private var vc = ViewController()
+    lazy private var vc = ViewController()
 
     var gridBounds: CGRect?
 
@@ -161,13 +161,19 @@ class SetCardView: UIView {
         self.backgroundColor = UIColor.clear
         self.contentMode = .redraw
 
-        let tapGesture = UITapGestureRecognizer(target: vc, action: #selector(vc.touchCard(sender:)) )
+        // BUG: Does not initiate outlets when creating instance of view controller, so touchCard method can't access them
+        // touch method here would call vc's method instead
+        // during initialization, VC's outlets are not properly initialized
+
+//        let tapGesture = UITapGestureRecognizer(target: vc, action: #selector(vc.touchCard(sender:)) )
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(touchCard(sender:)) )
         self.addGestureRecognizer(tapGesture)
     }
 
-//    @objc func touchCard() {
+    @objc func touchCard(sender: UITapGestureRecognizer) {
+        vc.selectCard(from: sender)
 //        print(self.textRepresentation)
-//    }
+    }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

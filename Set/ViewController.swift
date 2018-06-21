@@ -10,6 +10,7 @@ import UIKit
 
 struct SetConstants {
     static var startingCardCount = 12
+    static var numberOfCardsToDeal = 3
 }
 
 class ViewController: UIViewController {
@@ -38,13 +39,13 @@ class ViewController: UIViewController {
 
     @IBAction func dealThreeMoreCards(_ sender: UIButton) {
         //BUG: Crashes when no card on field (all on the deck) and tries to replace cards
-        guard game.deck.cards.count >= 3 else { return }
+        guard game.deck.cards.count >= SetConstants.numberOfCardsToDeal else { return }
 
         if isMatched {
             game.replaceCards()
         } else {
-            game.dealCards(3)
-            addCardsOnField(3)
+            game.dealCards(SetConstants.numberOfCardsToDeal)
+            addCardsOnField(SetConstants.numberOfCardsToDeal)
         }
         updateViewFromModel()
     }
@@ -68,7 +69,9 @@ class ViewController: UIViewController {
     @objc private func touchCard(sender: UITapGestureRecognizer) {
         if let card = sender.view as? SetCardView {
             if let selectIndex = playingFieldView.subviews.index(of: card) {
-                game.selectCard(selectIndex)
+                playingFieldView.subviews[selectIndex].removeFromSuperview()
+                game.cardsBeingPlayed.remove(at: selectIndex)
+//                game.selectCard(selectIndex)
             }
         }
         updateViewFromModel()
@@ -124,7 +127,7 @@ class ViewController: UIViewController {
             }
         }
 
-        dealThreeMoreCardsButton.isEnabled = game.deck.cards.count > 0
+        dealThreeMoreCardsButton.isEnabled = !game.deck.cards.isEmpty || isMatched
         scoreLabel.text = "Score: \(game.score)"
     }
 

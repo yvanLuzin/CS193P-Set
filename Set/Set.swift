@@ -10,7 +10,7 @@ import Foundation
 
 class Set {
     private(set) var deck = SetDeck()
-    private(set) var cardsBeingPlayed = [Card]()
+    var cardsBeingPlayed = [Card]()
     private(set) var selectedCards = [Card]()
     private(set) var matchedCards = [Card]()
     private(set) var score = 0

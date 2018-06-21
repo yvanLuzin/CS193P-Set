@@ -16,7 +16,16 @@ class SetCardView: UIView {
     var shading: Shading!
     var count: Int!
     var identifier: Int!
-    lazy private var vc = ViewController()
+
+    var isSelected: Bool = false
+
+    enum matchedState {
+        case matched
+        case mismatched
+        case idle
+    }
+
+    var isMatched: matchedState = .idle
 
     var gridBounds: CGRect?
 
@@ -25,8 +34,20 @@ class SetCardView: UIView {
             roundedRect: bounds.insetBy(dx: (bounds.width+bounds.height)*0.008, dy: (bounds.width+bounds.height)*0.008),
             cornerRadius: paddingRatio)
         roundedRect.addClip()
-        UIColor.white.setFill()
+
+        switch isMatched {
+        case .matched: Color.confirm.setFill()
+        case .mismatched: Color.denied.setFill()
+        case .idle: UIColor.white.setFill()
+        }
+
         roundedRect.fill()
+
+        if isSelected == true {
+            roundedRect.lineWidth = lineWidth * 2
+            Color.outline.setStroke()
+            roundedRect.stroke()
+        }
 
         color.setFill()
         color.setStroke()
@@ -160,19 +181,6 @@ class SetCardView: UIView {
         self.isOpaque = false
         self.backgroundColor = UIColor.clear
         self.contentMode = .redraw
-
-        // BUG: Does not initiate outlets when creating instance of view controller, so touchCard method can't access them
-        // touch method here would call vc's method instead
-        // during initialization, VC's outlets are not properly initialized
-
-//        let tapGesture = UITapGestureRecognizer(target: vc, action: #selector(vc.touchCard(sender:)) )
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(touchCard(sender:)) )
-        self.addGestureRecognizer(tapGesture)
-    }
-
-    @objc func touchCard(sender: UITapGestureRecognizer) {
-        vc.selectCard(from: sender)
-//        print(self.textRepresentation)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -213,5 +221,8 @@ extension SetCardView {
         static var red = #colorLiteral(red: 1, green: 0.233825969, blue: 0.4614375874, alpha: 1)
         static var green = #colorLiteral(red: 0.4215252755, green: 0.7735763008, blue: 0.2147679271, alpha: 1)
         static var purple = #colorLiteral(red: 0.5041278131, green: 0.3157204778, blue: 0.7055400032, alpha: 1)
+        static var outline = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
+        static var confirm = #colorLiteral(red: 0.664418355, green: 1, blue: 0.8068742257, alpha: 1)
+        static var denied = #colorLiteral(red: 1, green: 0.6733556793, blue: 0.6629678455, alpha: 1)
     }
 }

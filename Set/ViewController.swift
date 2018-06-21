@@ -25,23 +25,26 @@ class ViewController: UIViewController {
     @IBOutlet var dealThreeMoreCardsButton: UIButton!
 
     @IBOutlet var playingFieldView: PlayingFieldView!
-//        {
-//        didSet {
-//            for view in playingFieldView.subviews {
-//                let card = view as? SetCardView
-//                let tapGesture = UITapGestureRecognizer(target: self, action: #selector(touchCard(sender:)))
-//                card?.addGestureRecognizer(tapGesture)
-//            }
-//        }
-//    }
+    {
+        didSet {
+            let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(dealThreeMoreCards(_:)))
+            swipeGesture.direction = .down
+            playingFieldView.addGestureRecognizer(swipeGesture)
+
+            let rotateGesture = UIRotationGestureRecognizer(target: self, action: #selector(shuffleCards(sender:)))
+            playingFieldView.addGestureRecognizer(rotateGesture)
+        }
+    }
 
     @IBAction func dealThreeMoreCards(_ sender: UIButton) {
+        //BUG: Crashes when no card on field (all on the deck) and tries to replace cards
+        guard game.deck.cards.count >= 3 else { return }
+
         if isMatched {
             game.replaceCards()
         } else {
             game.dealCards(3)
-            playingFieldView.numberOfCardsToDraw = 3
-            playingFieldView.setup(3)
+            addCardsOnField(3)
         }
         updateViewFromModel()
     }
@@ -49,35 +52,41 @@ class ViewController: UIViewController {
     @IBAction func newGame(_ sender: UIButton) {
         game.newGame()
         playingFieldView.subviews.forEach { $0.removeFromSuperview() }
-        playingFieldView.numberOfCardsToDraw = SetConstants.startingCardCount
-        playingFieldView.setup(SetConstants.startingCardCount)
+        addCardsOnField(SetConstants.startingCardCount)
         updateViewFromModel()
     }
 
-    func selectCard(from sender: UITapGestureRecognizer) {
-        print("hello")
-        print(playingFieldView?.subviews.isEmpty)
+    func addCardsOnField(_ count: Int) {
+        for _ in 0..<count {
+            let card = SetCardView()
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(touchCard(sender:)))
+            card.addGestureRecognizer(tapGesture)
+            playingFieldView.addSubview(card)
+        }
     }
 
-//    @objc func touchCard(sender: UITapGestureRecognizer) {
-//        print("hello")
-//        print(playingFieldView?.subviews.isEmpty)
-//        if let cardView = (playingFieldView.subviews[index] as? SetCardView) {
+    @objc private func touchCard(sender: UITapGestureRecognizer) {
+        if let card = sender.view as? SetCardView {
+            if let selectIndex = playingFieldView.subviews.index(of: card) {
+                game.selectCard(selectIndex)
+            }
+        }
+        updateViewFromModel()
+    }
 
-//        }
-//        print(view.subviews)
-//        print(self)
-//        print(sender.view)
-//        if let card = (sender.view as? SetCardView),  {
-//            print(playingFieldView.subviews.index(of: sender.view!)!)
-//        }
-//        print(playingFieldView.subviews)
-//    }
+    @objc private func shuffleCards(sender: UIRotationGestureRecognizer) {
+        switch sender.state {
+        case .ended:
+            game.shuffleCards()
+            updateViewFromModel()
+        default: break
+        }
+    }
 
     private func updateViewFromModel() {
         for index in game.cardsBeingPlayed.indices {
             let card = game.cardsBeingPlayed[index]
-            print(playingFieldView.subviews.isEmpty)
+
             if let cardView = (playingFieldView.subviews[index] as? SetCardView) {
                 cardView.textRepresentation = card.description
                 cardView.identifier = card.hashValue
@@ -102,12 +111,18 @@ class ViewController: UIViewController {
                     case .second: cardView.count = SetCardView.Count.two.rawValue
                     case .third: cardView.count = SetCardView.Count.three.rawValue
                 }
+
+                cardView.isSelected = game.selectedCards.contains(card)
+
+                if game.matchedCards.contains(card) {
+                    cardView.isMatched = .matched
+                } else if game.selectedCards.count > 2 && game.selectedCards.contains(card) {
+                    cardView.isMatched = .mismatched
+                } else {
+                    cardView.isMatched = .idle
+                }
             }
         }
-
-//        for card in playingFieldView.subviews {
-//            print((card as! SetCardView).textRepresentation)
-//        }
 
         dealThreeMoreCardsButton.isEnabled = game.deck.cards.count > 0
         scoreLabel.text = "Score: \(game.score)"
@@ -115,6 +130,7 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        addCardsOnField(SetConstants.startingCardCount)
         updateViewFromModel()
     }
 

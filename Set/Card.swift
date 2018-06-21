@@ -63,6 +63,13 @@ struct Card: Hashable {
 
 
 extension Card: CustomStringConvertible {
+    private func multiplyString(_ string: String) -> String {
+        if count.value == .first {
+            return string
+        } else {
+            return string + "s"
+        }
+    }
     var description: String {
         var countString: String {
             switch count.value {
@@ -80,16 +87,16 @@ extension Card: CustomStringConvertible {
         }
         var shapeString: String {
             switch shape.value {
-            case .first: return "diamond"
-            case .second: return "squiggle"
-            case .third: return "oval"
+            case .first: return multiplyString("diamond")
+            case .second: return multiplyString("squiggle")
+            case .third: return multiplyString("oval")
             }
         }
         var shadingString: String {
             switch shading.value {
-            case .first: return "solid"
+            case .first: return "open"
             case .second: return "striped"
-            case .third: return "open"
+            case .third: return "solid"
             }
         }
         return "\(countString ) \(colorString) \(shadingString) \(shapeString)"

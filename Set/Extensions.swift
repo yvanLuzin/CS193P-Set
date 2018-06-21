@@ -13,3 +13,12 @@ extension Int {
         return Int(arc4random_uniform(UInt32(self)))
     }
 }
+
+extension Array {
+    mutating func shuffle() {
+        for i in self.indices {
+            let j = self.count.arc4random
+            self.swapAt(i, j)
+        }
+    }
+}

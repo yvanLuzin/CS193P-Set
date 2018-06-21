@@ -27,16 +27,23 @@ class Set {
     }
 
     private func matchCard() {
+        //for debug
+        matchedCards += selectedCards
+        return
+
+        var matchingResults = [Int]()
+
         for feature in SetProperties.Feature.all {
             let amountOfMatchedFeatures = selectedCards.filter({ $0[feature] == selectedCards.first?[feature] }).count
-            guard amountOfMatchedFeatures != 2 else {
-                score -= 5
-                return
-            }
+            matchingResults.append(amountOfMatchedFeatures)
         }
 
-        matchedCards += selectedCards
-        score += 3
+        if matchingResults.contains(2) {
+            score -= 5
+        } else {
+            matchedCards += selectedCards
+            score += 3
+        }
     }
 
     /// BUG: You can select already selected card after it was matched
@@ -69,6 +76,10 @@ class Set {
                 selectedCards.removeAll()
             }
         }
+    }
+
+    func shuffleCards() {
+        cardsBeingPlayed.shuffle()
     }
 
     func newGame() {

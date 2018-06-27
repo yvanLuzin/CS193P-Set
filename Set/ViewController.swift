@@ -38,14 +38,10 @@ class ViewController: UIViewController {
     }
 
     @IBAction func dealThreeMoreCards(_ sender: UIButton) {
-        //BUG: Crashes when no card on field (all on the deck) and tries to replace cards
-        guard game.deck.cards.count >= SetConstants.numberOfCardsToDeal else { return }
-
         if isMatched {
             game.replaceCards()
         } else {
             game.dealCards(SetConstants.numberOfCardsToDeal)
-            addCardsOnField(SetConstants.numberOfCardsToDeal)
         }
         updateViewFromModel()
     }
@@ -53,26 +49,27 @@ class ViewController: UIViewController {
     @IBAction func newGame(_ sender: UIButton) {
         game.newGame()
         playingFieldView.subviews.forEach { $0.removeFromSuperview() }
-        addCardsOnField(SetConstants.startingCardCount)
         updateViewFromModel()
     }
 
-    func addCardsOnField(_ count: Int) {
-        for _ in 0..<count {
-            let card = SetCardView()
-            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(touchCard(sender:)))
-            card.addGestureRecognizer(tapGesture)
-            playingFieldView.addSubview(card)
+    private func changeNumberOfCardsOnField(by count: Int) {
+        if count >= 0 {
+            for _ in 0..<count {
+                let card = SetCardView()
+                let tapGesture = UITapGestureRecognizer(target: self, action: #selector(touchCard(sender:)))
+                card.addGestureRecognizer(tapGesture)
+                playingFieldView.addSubview(card)
+            }
+        } else {
+            for _ in 0..<abs(count) {
+                playingFieldView.subviews.last?.removeFromSuperview()
+            }
         }
     }
 
     @objc private func touchCard(sender: UITapGestureRecognizer) {
-        if let card = sender.view as? SetCardView {
-            if let selectIndex = playingFieldView.subviews.index(of: card) {
-                playingFieldView.subviews[selectIndex].removeFromSuperview()
-                game.cardsBeingPlayed.remove(at: selectIndex)
-//                game.selectCard(selectIndex)
-            }
+        if let card = sender.view as? SetCardView, let selectIndex = playingFieldView.subviews.index(of: card) {
+            game.selectCard(selectIndex)
         }
         updateViewFromModel()
     }
@@ -86,44 +83,55 @@ class ViewController: UIViewController {
         }
     }
 
+    private func setCardAppearance(to cardView: SetCardView, from card: Card) {
+        cardView.textRepresentation = card.description
+        cardView.identifier = card.hashValue
+
+        switch card[.color] {
+        case .first: cardView.color = SetCardView.Color.red
+        case .second: cardView.color = SetCardView.Color.green
+        case .third: cardView.color = SetCardView.Color.purple
+        }
+        switch card[.shape] {
+        case .first: cardView.shape = SetCardView.Shape.diamond
+        case .second: cardView.shape = SetCardView.Shape.squiggle
+        case .third: cardView.shape = SetCardView.Shape.oval
+        }
+        switch card[.shading] {
+        case .first: cardView.shading = SetCardView.Shading.solid
+        case .second: cardView.shading = SetCardView.Shading.striped
+        case .third: cardView.shading = SetCardView.Shading.open
+        }
+        switch card[.count] {
+        case .first: cardView.count = SetCardView.Count.one.rawValue
+        case .second: cardView.count = SetCardView.Count.two.rawValue
+        case .third: cardView.count = SetCardView.Count.three.rawValue
+        }
+
+        cardView.isSelected = game.selectedCards.contains(card)
+
+        if game.matchedCards.contains(card) {
+            cardView.isMatched = .matched
+        } else if game.selectedCards.count > 2 && game.selectedCards.contains(card) {
+            cardView.isMatched = .mismatched
+        } else {
+            cardView.isMatched = .idle
+        }
+    }
+
     private func updateViewFromModel() {
-        for index in game.cardsBeingPlayed.indices {
-            let card = game.cardsBeingPlayed[index]
 
+        var numberOfCards: Int {
+            let result = game.cardsBeingPlayed.count - playingFieldView.subviews.count
+            return result
+        }
+
+        changeNumberOfCardsOnField(by: numberOfCards)
+
+        for index in playingFieldView.subviews.indices {
             if let cardView = (playingFieldView.subviews[index] as? SetCardView) {
-                cardView.textRepresentation = card.description
-                cardView.identifier = card.hashValue
-
-                switch card[.color] {
-                    case .first: cardView.color = SetCardView.Color.red
-                    case .second: cardView.color = SetCardView.Color.green
-                    case .third: cardView.color = SetCardView.Color.purple
-                }
-                switch card[.shape] {
-                    case .first: cardView.shape = SetCardView.Shape.diamond
-                    case .second: cardView.shape = SetCardView.Shape.squiggle
-                    case .third: cardView.shape = SetCardView.Shape.oval
-                }
-                switch card[.shading] {
-                    case .first: cardView.shading = SetCardView.Shading.solid
-                    case .second: cardView.shading = SetCardView.Shading.striped
-                    case .third: cardView.shading = SetCardView.Shading.open
-                }
-                switch card[.count] {
-                    case .first: cardView.count = SetCardView.Count.one.rawValue
-                    case .second: cardView.count = SetCardView.Count.two.rawValue
-                    case .third: cardView.count = SetCardView.Count.three.rawValue
-                }
-
-                cardView.isSelected = game.selectedCards.contains(card)
-
-                if game.matchedCards.contains(card) {
-                    cardView.isMatched = .matched
-                } else if game.selectedCards.count > 2 && game.selectedCards.contains(card) {
-                    cardView.isMatched = .mismatched
-                } else {
-                    cardView.isMatched = .idle
-                }
+                let card = game.cardsBeingPlayed[index]
+                setCardAppearance(to: cardView, from: card)
             }
         }
 
@@ -133,7 +141,6 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        addCardsOnField(SetConstants.startingCardCount)
         updateViewFromModel()
     }
 

@@ -10,14 +10,11 @@ import Foundation
 
 class Set {
     private(set) var deck = SetDeck()
-    var cardsBeingPlayed = [Card]()
+    private(set) var cardsBeingPlayed = [Card]() //should remove?
     private(set) var selectedCards = [Card]()
     private(set) var matchedCards = [Card]()
     private(set) var score = 0
 
-    ///Append `amount` cards to `cardsInGame`
-    ///BUG: Probably will crash when deck is empty
-    ///TODO: Should replace matched cards
     func dealCards(_ amount: Int) {
         for _ in 0..<amount {
             if let card = deck.drawCard() {
@@ -27,9 +24,10 @@ class Set {
     }
 
     private func matchCard() {
-        //for debug
+        /*
         matchedCards += selectedCards
         return
+         */
 
         var matchingResults = [Int]()
 
@@ -46,9 +44,10 @@ class Set {
         }
     }
 
-    /// BUG: You can select already selected card after it was matched
     func selectCard(_ index: Int) {
         let card = cardsBeingPlayed[index]
+
+        guard !matchedCards.contains(card) else { print("no"); return }
 
         if selectedCards.count > 2 {
             replaceCards()
@@ -65,14 +64,16 @@ class Set {
         if selectedCards.count == 3 {
             matchCard()
         }
-        print(selectedCards)
     }
 
     func replaceCards() {
-        for index in cardsBeingPlayed.indices {
+        let count = cardsBeingPlayed.count-1
+        for index in stride(from: count, through: 0, by: -1) {
             if matchedCards.contains(cardsBeingPlayed[index]) {
                 cardsBeingPlayed.remove(at: index)
-                cardsBeingPlayed.insert(deck.drawCard()!, at: index)
+                if let newCard = deck.drawCard() {
+                    cardsBeingPlayed.insert(newCard, at: index)
+                }
                 selectedCards.removeAll()
             }
         }

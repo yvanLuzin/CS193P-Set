@@ -11,11 +11,11 @@ import UIKit
 class SetCardView: UIView {
     var textRepresentation: String = "" { didSet { setNeedsDisplay() } }
 
-    var shape: Shape!
-    var color: UIColor!
-    var shading: Shading!
-    var count: Int!
-    var identifier: Int!
+    var shape: Shape?
+    var color: UIColor? = UIColor.white
+    var shading: Shading?
+    var count: Int?
+    var identifier: Int?
 
     var isSelected: Bool = false
 
@@ -49,8 +49,10 @@ class SetCardView: UIView {
             roundedRect.stroke()
         }
 
-        color.setFill()
-        color.setStroke()
+        var figureColor = color ?? UIColor.white
+
+        figureColor.setFill()
+        figureColor.setStroke()
 
         let paddedRect = bounds.insetBy(dx: paddingRatio, dy: paddingRatio)
         var isHorizontal: Bool {
@@ -67,7 +69,7 @@ class SetCardView: UIView {
             x: paddedRect.origin.x + paddedRect.width / 2,
             y: paddedRect.origin.y + paddedRect.height / 2)
 
-        for amount in 1...count {
+        for amount in 1...(count ?? 1) {
             let context = UIGraphicsGetCurrentContext()
             context?.saveGState()
             var horizontalPosition: CGFloat {
@@ -76,8 +78,7 @@ class SetCardView: UIView {
                 case 1: return boundsCenter.x - minimalSideSize / 2
                 case 2: return boundsCenter.x - minimalSideSize * (CGFloat(amount-1))
                 case 3: return boundsCenter.x - minimalSideSize * 1.5 + minimalSideSize * (CGFloat(amount-1))
-                default:
-                    fatalError("Count can't be more than 3, current value: \(count)")
+                default: return boundsCenter.x
                 }
             }
             var verticalPosition: CGFloat {
@@ -86,8 +87,7 @@ class SetCardView: UIView {
                 case 1: return boundsCenter.y - shortSide / 2
                 case 2: return boundsCenter.y - shortSide * (CGFloat(amount-1))
                 case 3: return boundsCenter.y - shortSide * 1.5 + shortSide * (CGFloat(amount-1))
-                default:
-                    fatalError("Count can't be more than 3, current value: \(count)")
+                default: return boundsCenter.y
                 }
             }
             var drawArea = CGRect(x: horizontalPosition,
@@ -97,32 +97,34 @@ class SetCardView: UIView {
                 .insetBy(dx: minimalSideSize*0.04,
                          dy: minimalSideSize*0.04)
 
-            var figure: UIBezierPath {
-                switch shape! {
-                case .diamond: return drawDiamond(in: drawArea)
-                case .oval: return drawOval(in: drawArea)
-                case .squiggle: return drawSquiggle(in: drawArea)
+            if let figureShape = shape, let figureShading = shading {
+                var figure: UIBezierPath {
+                    switch figureShape {
+                    case .diamond: return drawDiamond(in: drawArea)
+                    case .oval: return drawOval(in: drawArea)
+                    case .squiggle: return drawSquiggle(in: drawArea)
+                    }
                 }
-            }
 
-            figure.addClip()
+                figure.addClip()
 
-            if shading! == .striped {
-                let line = UIBezierPath()
-                line.lineWidth = lineWidth/2
-                for singleLine in stride(from: Float(rect.minX), to: Float(rect.maxX), by: Float(lineWidth*1.5)) {
-                    line.move(to: CGPoint(x: rect.minX+CGFloat(singleLine), y: rect.minY))
-                    line.addLine(to: CGPoint(x: rect.minX+CGFloat(singleLine), y: rect.maxY))
+                if figureShading == .striped {
+                    let line = UIBezierPath()
+                    line.lineWidth = lineWidth/2
+                    for singleLine in stride(from: Float(rect.minX), to: Float(rect.maxX), by: Float(lineWidth*1.5)) {
+                        line.move(to: CGPoint(x: rect.minX+CGFloat(singleLine), y: rect.minY))
+                        line.addLine(to: CGPoint(x: rect.minX+CGFloat(singleLine), y: rect.maxY))
+                    }
+                    line.stroke()
                 }
-                line.stroke()
-            }
 
-            context?.restoreGState()
+                context?.restoreGState()
 
-            if !(shading! == .open) {
-                figure.stroke()
-            } else {
-                figure.fill()
+                if !(shading! == .open) {
+                    figure.stroke()
+                } else {
+                    figure.fill()
+                }
             }
         }
     }

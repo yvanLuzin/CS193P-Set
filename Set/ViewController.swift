@@ -68,10 +68,14 @@ class ViewController: UIViewController {
     }
 
     @objc private func touchCard(sender: UITapGestureRecognizer) {
-        if let card = sender.view as? SetCardView, let selectIndex = playingFieldView.subviews.index(of: card) {
-            game.selectCard(selectIndex)
+        switch sender.state {
+        case .ended:
+            if let card = sender.view as? SetCardView, let selectIndex = playingFieldView.subviews.index(of: card) {
+                game.selectCard(selectIndex)
+            }
+            updateViewFromModel()
+        default: break
         }
-        updateViewFromModel()
     }
 
     @objc private func shuffleCards(sender: UIRotationGestureRecognizer) {
@@ -84,7 +88,6 @@ class ViewController: UIViewController {
     }
 
     private func setCardAppearance(to cardView: SetCardView, from card: Card) {
-        cardView.textRepresentation = card.description
         cardView.identifier = card.hashValue
 
         switch card[.color] {

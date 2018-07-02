@@ -9,15 +9,13 @@
 import UIKit
 
 class SetCardView: UIView {
-    var textRepresentation: String = "" { didSet { setNeedsDisplay() } }
+    var shape: Shape? { didSet { setNeedsDisplay() } }
+    var color: UIColor? = UIColor.white { didSet { setNeedsDisplay() } }
+    var shading: Shading? { didSet { setNeedsDisplay() } }
+    var count: Int? { didSet { setNeedsDisplay() } }
+    var identifier: Int? { didSet { setNeedsDisplay() } }
 
-    var shape: Shape?
-    var color: UIColor? = UIColor.white
-    var shading: Shading?
-    var count: Int?
-    var identifier: Int?
-
-    var isSelected: Bool = false
+    var isSelected: Bool = false { didSet { setNeedsDisplay() } }
 
     enum matchedState {
         case matched
@@ -27,7 +25,7 @@ class SetCardView: UIView {
 
     var isMatched: matchedState = .idle
 
-    var gridBounds: CGRect?
+    private(set) var gridBounds: CGRect?
 
     override func draw(_ rect: CGRect) {
         let roundedRect = UIBezierPath(
@@ -191,19 +189,19 @@ class SetCardView: UIView {
 }
 
 extension SetCardView {
-    var lineWidth: CGFloat {
+    private var lineWidth: CGFloat {
         return paddingRatio*0.15
     }
 
-    var paddingRatio: CGFloat {
+    private var paddingRatio: CGFloat {
         return (bounds.width+bounds.height)*0.04
     }
 
-    var verticalPadding: CGFloat {
+    private var verticalPadding: CGFloat {
         return 10.0
     }
 
-    var horizontalPadding: CGFloat {
+    private var horizontalPadding: CGFloat {
         return 10.0
     }
 

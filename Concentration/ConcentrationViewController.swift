@@ -12,8 +12,6 @@ class ConcentrationViewController: UIViewController {
 
     // MARK: - properties
 
-    let DEBUG = true
-
     lazy var game = Concentration(numberOfPairsOfCards: (cardButtons.count + 1) / 2)
 
     var theme = Theme(
@@ -21,6 +19,9 @@ class ConcentrationViewController: UIViewController {
         symbols: ["🐶", "🐱", "🐭", "🦊", "🐻", "🐸", "🐙", "🦁"],
         primaryColor: #colorLiteral(red: 0, green: 0.4784313725, blue: 1, alpha: 1),
         secondaryColor: #colorLiteral(red: 0.1294117719, green: 0.2156862766, blue: 0.06666667014, alpha: 1))
+        {didSet {
+            updateViewFromModel()
+        }}
 
     var emoji = [Int:String]()
 
@@ -28,7 +29,13 @@ class ConcentrationViewController: UIViewController {
 
     @IBOutlet var flipCountLabel: UILabel!
     @IBOutlet var scoreLabel: UILabel!
-    @IBOutlet var cardButtons: [UIButton]!
+    @IBOutlet var cardButtons: [UIButton]! {
+        didSet {
+            for card in cardButtons {
+                card.layer.cornerRadius = 3.0
+            }
+        }
+    }
 
     @IBAction func touchCard(_ sender: UIButton) {
         if let cardNumber = cardButtons.index(of: sender) {

@@ -8,17 +8,15 @@
 
 import UIKit
 
-class ConcentrationThemeChooserViewController: UIViewController {
+class ConcentrationThemeChooserViewController: UIViewController, UISplitViewControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
     }
 
-    //array of buttons
-    //on click check button's index in array
-    //find theme with same index as button index
+    override func awakeFromNib() {
+        splitViewController?.delegate = self
+    }
 
     var themes = [
         Theme(
@@ -53,6 +51,13 @@ class ConcentrationThemeChooserViewController: UIViewController {
             secondaryColor: #colorLiteral(red: 0.1921568662, green: 0.007843137719, blue: 0.09019608051, alpha: 1))
     ]
 
+    private var splitViewDetailConcentrationViewController: ConcentrationViewController? {
+        return splitViewController?.viewControllers.last as? ConcentrationViewController
+    }
+
+    //create a strong reference to view controller so it won't be dropped out from heap
+    private var lastSeguedToConcentrationViewController: ConcentrationViewController?
+
     @IBOutlet var themeButtons: [UIButton]! {
         didSet {
             for index in themeButtons.indices {
@@ -62,15 +67,24 @@ class ConcentrationThemeChooserViewController: UIViewController {
     }
 
     @IBAction func selectTheme(sender: UIButton) {
-        performSegue(withIdentifier: "Choose Theme", sender: sender)
+        if let cvc = splitViewDetailConcentrationViewController {
+            if let themeIndex = themeButtons.index(of: sender) {
+                cvc.theme = themes[themeIndex]
+            }
+        } else if let cvc = lastSeguedToConcentrationViewController {
+            if let themeIndex = themeButtons.index(of: sender) {
+                cvc.theme = themes[themeIndex]
+            }
+            navigationController?.pushViewController(cvc, animated: true)
+        } else {
+            performSegue(withIdentifier: "Choose Theme", sender: sender)
+        }
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-
 
     // MARK: - Navigation
 
@@ -82,8 +96,8 @@ class ConcentrationThemeChooserViewController: UIViewController {
                 let themeIndex = themeButtons.index(of: button),
                 let cvc = segue.destination as? ConcentrationViewController {
                 cvc.theme = themes[themeIndex]
+                lastSeguedToConcentrationViewController = cvc
             }
         }
     }
-
 }

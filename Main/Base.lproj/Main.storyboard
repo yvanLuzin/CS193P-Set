@@ -348,16 +348,25 @@
                                 <rect key="frame" x="119" y="155" width="57" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button 1"/>
+                                <connections>
+                                    <action selector="selectThemeWithSender:" destination="0q9-tl-fii" eventType="touchUpInside" id="Cy8-v2-02q"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6dj-ub-Pjq">
                                 <rect key="frame" x="118" y="192" width="59" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button 2"/>
+                                <connections>
+                                    <action selector="selectThemeWithSender:" destination="0q9-tl-fii" eventType="touchUpInside" id="Mk2-d6-Pir"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lW0-v5-NRh">
                                 <rect key="frame" x="118" y="230" width="59" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button 3"/>
+                                <connections>
+                                    <action selector="selectThemeWithSender:" destination="0q9-tl-fii" eventType="touchUpInside" id="HpE-cR-LfE"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Pick theme" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="frz-P9-FuB">
                                 <rect key="frame" x="104" y="111" width="86" height="21"/>
@@ -375,6 +384,7 @@
                         <outletCollection property="themeButtons" destination="kcl-Nh-uf1" collectionClass="NSMutableArray" id="nIi-yh-jtw"/>
                         <outletCollection property="themeButtons" destination="6dj-ub-Pjq" collectionClass="NSMutableArray" id="hBt-MV-eYq"/>
                         <outletCollection property="themeButtons" destination="lW0-v5-NRh" collectionClass="NSMutableArray" id="JiY-lk-RfL"/>
+                        <segue destination="2uG-bk-BTe" kind="showDetail" identifier="Choose Theme" id="32O-d0-28a"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c1O-nW-rOO" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -414,4 +424,7 @@
             <point key="canvasLocation" x="1833" y="-496"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="32O-d0-28a"/>
+    </inferredMetricsTieBreakers>
 </document>

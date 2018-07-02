@@ -19,7 +19,7 @@ class ConcentrationViewController: UIViewController {
     var theme = Theme(
         name: "Init",
         symbols: ["🐶", "🐱", "🐭", "🦊", "🐻", "🐸", "🐙", "🦁"],
-        primaryColor: #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1),
+        primaryColor: #colorLiteral(red: 0, green: 0.4784313725, blue: 1, alpha: 1),
         secondaryColor: #colorLiteral(red: 0.1294117719, green: 0.2156862766, blue: 0.06666667014, alpha: 1))
 
     var emoji = [Int:String]()
@@ -47,6 +47,8 @@ class ConcentrationViewController: UIViewController {
     // MARK: - methods
 
     func updateViewFromModel() {
+        guard cardButtons != nil else { return }
+
         for index in cardButtons.indices {
             let button = cardButtons[index]
             let card = game.cards[index]
@@ -56,22 +58,12 @@ class ConcentrationViewController: UIViewController {
                 button.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
             } else {
                 button.setTitle("", for: .normal)
-
-                button.backgroundColor = card.isMatched ? #colorLiteral(red: 1, green: 0.6832544749, blue: 0.05503074124, alpha: 0) : #colorLiteral(red: 0, green: 0.4784313725, blue: 1, alpha: 1) //theme.primaryColor
+                button.backgroundColor = card.isMatched ? #colorLiteral(red: 1, green: 0.6832544749, blue: 0.05503074124, alpha: 0) : theme.primaryColor
             }
         }
         flipCountLabel.text = "Flips: \(game.flipCount)"
         scoreLabel.text = "Score: \(game.score)"
     }
-
-    /*
-    func selectRandomTheme() {
-        let randomTheme = Int(arc4random_uniform(UInt32(themes.count)))
-        theme = themes[randomTheme]
-//        view.backgroundColor = theme.secondaryColor
-        if !emoji.isEmpty { emoji.removeAll() }
-    }
- */
 
     func emoji(for card: ConcentrationCard) -> String {
         if emoji[card.identifier] == nil, theme.symbols.count > 0 {

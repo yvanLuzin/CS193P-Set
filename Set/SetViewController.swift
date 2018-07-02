@@ -13,7 +13,7 @@ struct SetConstants {
     static var numberOfCardsToDeal = 3
 }
 
-class ViewController: UIViewController {
+class SetViewController: UIViewController {
 
     var game = Set()
 

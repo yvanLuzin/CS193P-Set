@@ -85,11 +85,9 @@ class ConcentrationViewController: UIViewController {
                 button.setTitle(emoji(for: card), for: .normal)
                 button.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
             } else {
-                DEBUG
-                    ? button.setTitle(String(card.identifier), for: .normal)
-                    : button.setTitle("", for: .normal)
+                button.setTitle("", for: .normal)
 
-                button.backgroundColor = card.isMatched ? #colorLiteral(red: 1, green: 0.6832544749, blue: 0.05503074124, alpha: 0) : theme.primaryColor
+                button.backgroundColor = card.isMatched ? #colorLiteral(red: 1, green: 0.6832544749, blue: 0.05503074124, alpha: 0) : #colorLiteral(red: 0, green: 0.4784313725, blue: 1, alpha: 1) //theme.primaryColor
             }
         }
         flipCountLabel.text = "Flips: \(game.flipCount)"
@@ -99,7 +97,7 @@ class ConcentrationViewController: UIViewController {
     func selectRandomTheme() {
         let randomTheme = Int(arc4random_uniform(UInt32(themes.count)))
         theme = themes[randomTheme]
-        view.backgroundColor = theme.secondaryColor
+//        view.backgroundColor = theme.secondaryColor
         if !emoji.isEmpty { emoji.removeAll() }
     }
 

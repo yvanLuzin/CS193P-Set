@@ -16,42 +16,13 @@ class ConcentrationViewController: UIViewController {
 
     lazy var game = Concentration(numberOfPairsOfCards: (cardButtons.count + 1) / 2)
 
-    var theme: Theme!
+    var theme = Theme(
+        name: "Init",
+        symbols: ["🐶", "🐱", "🐭", "🦊", "🐻", "🐸", "🐙", "🦁"],
+        primaryColor: #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1),
+        secondaryColor: #colorLiteral(red: 0.1294117719, green: 0.2156862766, blue: 0.06666667014, alpha: 1))
 
     var emoji = [Int:String]()
-
-    var themes = [
-        Theme(
-            name: "animals",
-            symbols: ["🐶", "🐱", "🐭", "🦊", "🐻", "🐸", "🐙", "🦁"],
-            primaryColor: #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1),
-            secondaryColor: #colorLiteral(red: 0.1294117719, green: 0.2156862766, blue: 0.06666667014, alpha: 1)),
-        Theme(
-            name: "sports",
-            symbols: ["⚽️", "🏀", "🏈", "⚾️", "🎾", "🏐", "🏉", "🎱"],
-            primaryColor: #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1),
-            secondaryColor: #colorLiteral(red: 0.1921568662, green: 0.007843137719, blue: 0.09019608051, alpha: 1)),
-        Theme(
-            name: "hearts",
-            symbols: ["❤️", "🧡", "💛", "💚", "💙", "💜", "🖤", "💖"],
-            primaryColor: #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1),
-            secondaryColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)),
-        Theme(
-            name: "things",
-            symbols: ["☎️", "📺", "💽", "🕹", "🎛", "⏰", "🔋", "💡"],
-            primaryColor: #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1),
-            secondaryColor: #colorLiteral(red: 0.09019608051, green: 0, blue: 0.3019607961, alpha: 1)),
-        Theme(
-            name: "cars",
-            symbols: ["🚗", "🚕", "🚙", "🚌", "🚎", "🏎", "🚓", "🚑"],
-            primaryColor: #colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1),
-            secondaryColor: #colorLiteral(red: 0.1960784346, green: 0.3411764801, blue: 0.1019607857, alpha: 1)),
-        Theme(
-            name: "travel",
-            symbols: ["🗿", "🗽", "🗼", "🏰", "🏯", "🏟", "🏝", "⛲️"],
-            primaryColor: #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1),
-            secondaryColor: #colorLiteral(red: 0.1921568662, green: 0.007843137719, blue: 0.09019608051, alpha: 1))
-    ]
 
     // MARK: - view outlets
 
@@ -71,7 +42,6 @@ class ConcentrationViewController: UIViewController {
     @IBAction func beingNewGame(_ sender: Any) {
         game.beginNewGame()
         updateViewFromModel()
-        selectRandomTheme()
     }
 
     // MARK: - methods
@@ -83,7 +53,7 @@ class ConcentrationViewController: UIViewController {
 
             if card.isFaceUp {
                 button.setTitle(emoji(for: card), for: .normal)
-                button.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+                button.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
             } else {
                 button.setTitle("", for: .normal)
 
@@ -94,12 +64,14 @@ class ConcentrationViewController: UIViewController {
         scoreLabel.text = "Score: \(game.score)"
     }
 
+    /*
     func selectRandomTheme() {
         let randomTheme = Int(arc4random_uniform(UInt32(themes.count)))
         theme = themes[randomTheme]
 //        view.backgroundColor = theme.secondaryColor
         if !emoji.isEmpty { emoji.removeAll() }
     }
+ */
 
     func emoji(for card: ConcentrationCard) -> String {
         if emoji[card.identifier] == nil, theme.symbols.count > 0 {
@@ -108,12 +80,6 @@ class ConcentrationViewController: UIViewController {
         }
 
         return emoji[card.identifier] ?? "?"
-    }
-
-    // MARK: - lifecycle
-
-    override func viewDidLoad() {
-        selectRandomTheme()
     }
 }
 

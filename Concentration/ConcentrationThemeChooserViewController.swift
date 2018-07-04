@@ -12,6 +12,9 @@ class ConcentrationThemeChooserViewController: UIViewController, UISplitViewCont
 
     override func viewDidLoad() {
         super.viewDidLoad()
+//        if let cvc = splitViewDetailConcentrationViewController {
+//            cvc.theme = themes[0]
+//        }
     }
 
     override func awakeFromNib() {
@@ -79,6 +82,15 @@ class ConcentrationThemeChooserViewController: UIViewController, UISplitViewCont
         } else {
             performSegue(withIdentifier: "Choose Theme", sender: sender)
         }
+    }
+
+    func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
+        if let cvc = secondaryViewController as? ConcentrationViewController {
+            if cvc.theme == nil {
+                return true
+            }
+        }
+        return false //pls collapse
     }
 
     override func didReceiveMemoryWarning() {

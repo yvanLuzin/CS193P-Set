@@ -14,16 +14,17 @@ class ConcentrationViewController: UIViewController {
 
     lazy var game = Concentration(numberOfPairsOfCards: (cardButtons.count + 1) / 2)
 
-    var theme = Theme(
-        name: "Init",
-        symbols: ["🐶", "🐱", "🐭", "🦊", "🐻", "🐸", "🐙", "🦁"],
-        primaryColor: #colorLiteral(red: 0, green: 0.4784313725, blue: 1, alpha: 1),
-        secondaryColor: #colorLiteral(red: 0.1294117719, green: 0.2156862766, blue: 0.06666667014, alpha: 1))
-        {didSet {
+    var theme: Theme? {
+        didSet {
+            emojiChoices = theme?.symbols ?? [""]
+            emoji = [:]
             updateViewFromModel()
-        }}
+        }
+    }
 
     var emoji = [Int:String]()
+
+    var emojiChoices = ["💟", "☮️", "✝️", "☪️", "🕉", "☸️", "✡️", "☯️"]
 
     // MARK: - view outlets
 
@@ -65,7 +66,7 @@ class ConcentrationViewController: UIViewController {
                 button.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
             } else {
                 button.setTitle("", for: .normal)
-                button.backgroundColor = card.isMatched ? #colorLiteral(red: 1, green: 0.6832544749, blue: 0.05503074124, alpha: 0) : theme.primaryColor
+                button.backgroundColor = card.isMatched ? #colorLiteral(red: 1, green: 0.6832544749, blue: 0.05503074124, alpha: 0) : theme?.primaryColor ?? #colorLiteral(red: 0, green: 0.4784313725, blue: 1, alpha: 1)
             }
         }
         flipCountLabel.text = "Flips: \(game.flipCount)"
@@ -73,12 +74,16 @@ class ConcentrationViewController: UIViewController {
     }
 
     func emoji(for card: ConcentrationCard) -> String {
-        if emoji[card.identifier] == nil, theme.symbols.count > 0 {
-            let randomIndex = Int(arc4random_uniform(UInt32(theme.symbols.count)))
-            emoji[card.identifier] = theme.symbols.remove(at: randomIndex)
+        if emoji[card.identifier] == nil, emojiChoices.count > 0 {
+            let randomIndex = Int(arc4random_uniform(UInt32(emojiChoices.count)))
+            emoji[card.identifier] = emojiChoices.remove(at: randomIndex)
         }
 
         return emoji[card.identifier] ?? "?"
+    }
+
+    override func viewDidLoad() {
+        updateViewFromModel()
     }
 }
 

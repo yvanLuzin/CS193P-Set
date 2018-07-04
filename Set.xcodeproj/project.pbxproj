@@ -14,11 +14,11 @@
 		BF174F1520AAAD0600E476BC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF174F1420AAAD0600E476BC /* AppDelegate.swift */; };
 		BF174F1720AAAD0600E476BC /* SetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF174F1620AAAD0600E476BC /* SetViewController.swift */; };
 		BF174F1A20AAAD0600E476BC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF174F1820AAAD0600E476BC /* Main.storyboard */; };
-		BF174F1C20AAAD0700E476BC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF174F1B20AAAD0700E476BC /* Assets.xcassets */; };
 		BF174F1F20AAAD0700E476BC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF174F1D20AAAD0700E476BC /* LaunchScreen.storyboard */; };
 		BF174F2A20AAAD0700E476BC /* SetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF174F2920AAAD0700E476BC /* SetTests.swift */; };
 		BF174F3520AAAD0700E476BC /* SetUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF174F3420AAAD0700E476BC /* SetUITests.swift */; };
 		BF5D0E9B20EA367400545048 /* ConcentrationThemeChooserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5D0E9A20EA367400545048 /* ConcentrationThemeChooserViewController.swift */; };
+		BF5D0E9D20ECCC0400545048 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF5D0E9C20ECCC0400545048 /* Assets.xcassets */; };
 		BF95C55D20C3F8860082E0F3 /* SetCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF95C55C20C3F8860082E0F3 /* SetCardView.swift */; };
 		BF95C56120C3FEB60082E0F3 /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF95C56020C3FEB60082E0F3 /* Grid.swift */; };
 		BF95C56320C41DF70082E0F3 /* PlayingFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF95C56220C41DF70082E0F3 /* PlayingFieldView.swift */; };
@@ -54,7 +54,6 @@
 		BF174F1420AAAD0600E476BC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BF174F1620AAAD0600E476BC /* SetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetViewController.swift; sourceTree = "<group>"; };
 		BF174F1920AAAD0600E476BC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		BF174F1B20AAAD0700E476BC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BF174F1E20AAAD0700E476BC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BF174F2020AAAD0700E476BC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BF174F2520AAAD0700E476BC /* SetTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SetTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -64,6 +63,7 @@
 		BF174F3420AAAD0700E476BC /* SetUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetUITests.swift; sourceTree = "<group>"; };
 		BF174F3620AAAD0700E476BC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BF5D0E9A20EA367400545048 /* ConcentrationThemeChooserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConcentrationThemeChooserViewController.swift; sourceTree = "<group>"; };
+		BF5D0E9C20ECCC0400545048 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BF95C55C20C3F8860082E0F3 /* SetCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCardView.swift; sourceTree = "<group>"; };
 		BF95C56020C3FEB60082E0F3 /* Grid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 		BF95C56220C41DF70082E0F3 /* PlayingFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayingFieldView.swift; sourceTree = "<group>"; };
@@ -122,9 +122,9 @@
 		BF12E57B20EA1D22000A738C /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				BF5D0E9C20ECCC0400545048 /* Assets.xcassets */,
 				BF174F1820AAAD0600E476BC /* Main.storyboard */,
 				BF174F1420AAAD0600E476BC /* AppDelegate.swift */,
-				BF174F1B20AAAD0700E476BC /* Assets.xcassets */,
 				BF174F1D20AAAD0700E476BC /* LaunchScreen.storyboard */,
 			);
 			path = Main;
@@ -290,7 +290,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BF174F1F20AAAD0700E476BC /* LaunchScreen.storyboard in Resources */,
-				BF174F1C20AAAD0700E476BC /* Assets.xcassets in Resources */,
+				BF5D0E9D20ECCC0400545048 /* Assets.xcassets in Resources */,
 				BF174F1A20AAAD0600E476BC /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

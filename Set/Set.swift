@@ -25,10 +25,8 @@ class Set {
     }
 
     private func matchCard() {
-        /*
         matchedCards += selectedCards
         return
-         */
 
         var matchingResults = [Int]()
 
@@ -93,6 +91,7 @@ class Set {
         matchedCards.removeAll()
         dealCards(SetConstants.startingCardCount)
         score = 0
+        numberOfSets = 0
     }
 
     init() {

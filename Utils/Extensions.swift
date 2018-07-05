@@ -7,10 +7,18 @@
 //
 
 import Foundation
+import UIKit
 
 extension Int {
     var arc4random: Int {
         return Int(arc4random_uniform(UInt32(self)))
+    }
+}
+
+extension CGFloat {
+    var arc4random: CGFloat {
+        let random = CGFloat(arc4random_uniform(UInt32(100))) / 100
+        return random * self
     }
 }
 

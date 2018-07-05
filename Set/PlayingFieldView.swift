@@ -10,6 +10,7 @@ import UIKit
 
 class PlayingFieldView: UIView {
     lazy var grid: Grid = configureGrid()
+    var isRearranged = false;
 
     var numberOfCardsOnField: Int {
         return subviews.indices.count
@@ -40,7 +41,17 @@ class PlayingFieldView: UIView {
         super.layoutSubviews()
         grid = configureGrid()
         for index in subviews.indices {
-            subviews[index].frame = grid[index]!
+            UIViewPropertyAnimator.runningPropertyAnimator(
+                withDuration: 0.3,
+                delay: 0,
+                options: [],
+                animations: {
+                    self.subviews[index].frame = self.grid[index]!
+                },
+                completion: { finish in
+                    self.isRearranged = true
+                }
+            )
         }
     }
 }

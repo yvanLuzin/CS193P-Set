@@ -17,6 +17,8 @@ class SetCardView: UIView {
 
     var isSelected: Bool = false { didSet { setNeedsDisplay() } }
 
+    var textualRepresentation: String = ""
+
     enum matchedState {
         case matched
         case mismatched

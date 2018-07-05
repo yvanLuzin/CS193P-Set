@@ -47,27 +47,27 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="e4n-by-0Fb">
-                                <rect key="frame" x="16" y="599" width="382" height="68"/>
+                                <rect key="frame" x="16" y="637" width="382" height="30"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hZy-Su-eAW">
-                                        <rect key="frame" x="0.0" y="0.0" width="382" height="30"/>
-                                        <state key="normal" title="Deal 3 More Cards"/>
-                                        <connections>
-                                            <action selector="dealThreeMoreCards:" destination="BYZ-38-t0r" eventType="touchUpInside" id="c5R-0T-bgb"/>
-                                        </connections>
-                                    </button>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="fiI-vX-Ihp">
-                                        <rect key="frame" x="0.0" y="38" width="382" height="30"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="382" height="30"/>
                                         <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hZy-Su-eAW">
+                                                <rect key="frame" x="0.0" y="0.0" width="127.33333333333333" height="30"/>
+                                                <state key="normal" title="Deck"/>
+                                                <connections>
+                                                    <action selector="dealThreeMoreCards:" destination="BYZ-38-t0r" eventType="touchUpInside" id="c5R-0T-bgb"/>
+                                                </connections>
+                                            </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S4H-lg-PBW">
-                                                <rect key="frame" x="0.0" y="0.0" width="191" height="30"/>
+                                                <rect key="frame" x="127.33333333333334" y="0.0" width="127.33333333333334" height="30"/>
                                                 <state key="normal" title="New Game"/>
                                                 <connections>
                                                     <action selector="newGame:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ec2-r3-moO"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Score" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vbQ-3k-bWk">
-                                                <rect key="frame" x="191" y="0.0" width="191" height="30"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sets" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vbQ-3k-bWk">
+                                                <rect key="frame" x="254.66666666666671" y="0.0" width="127.33333333333334" height="30"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -81,8 +81,8 @@
                         <constraints>
                             <constraint firstItem="fIn-nT-k4s" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="16" id="9dl-E6-N14"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="JpN-Fe-xKq" secondAttribute="trailing" constant="16" id="9o9-OL-ryA"/>
+                            <constraint firstItem="e4n-by-0Fb" firstAttribute="top" secondItem="JpN-Fe-xKq" secondAttribute="bottom" constant="46" id="IbE-Sk-acT"/>
                             <constraint firstItem="JpN-Fe-xKq" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="J4d-rM-Dc2"/>
-                            <constraint firstItem="hZy-Su-eAW" firstAttribute="top" secondItem="fIn-nT-k4s" secondAttribute="bottom" constant="8" symbolic="YES" id="ONT-Rh-Oq3"/>
                             <constraint firstItem="e4n-by-0Fb" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="PPh-ZS-xJD"/>
                             <constraint firstItem="JpN-Fe-xKq" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="16" id="aHa-nE-kET"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="e4n-by-0Fb" secondAttribute="bottom" constant="20" id="c45-a5-bxn"/>
@@ -92,7 +92,7 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Set" image="set_icon" selectedImage="set_icon" id="r05-P7-n8r"/>
                     <connections>
-                        <outlet property="dealThreeMoreCardsButton" destination="hZy-Su-eAW" id="YCj-xe-BgW"/>
+                        <outlet property="deckButton" destination="hZy-Su-eAW" id="YCj-xe-BgW"/>
                         <outlet property="playingFieldView" destination="fIn-nT-k4s" id="rHM-h8-32m"/>
                         <outlet property="scoreLabel" destination="vbQ-3k-bWk" id="NlS-L2-K7p"/>
                     </connections>
@@ -274,7 +274,7 @@
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Flips: 0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aGY-va-2CH">
                                                         <rect key="frame" x="0.0" y="6" width="103.66666666666667" height="18"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                        <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0od-hf-OyZ">
@@ -288,7 +288,7 @@
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Score: 0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WFz-y3-vip">
                                                         <rect key="frame" x="261.33333333333331" y="6" width="120.66666666666669" height="18"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                        <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                 </subviews>

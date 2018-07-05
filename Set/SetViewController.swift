@@ -23,17 +23,19 @@ class SetViewController: UIViewController {
 
     @IBOutlet var scoreLabel: UILabel!
 
-    @IBOutlet var dealThreeMoreCardsButton: UIButton!
+    @IBOutlet var deckButton: UIButton!
 
     @IBOutlet var playingFieldView: PlayingFieldView!
     {
         didSet {
+            /*
             let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(dealThreeMoreCards(_:)))
             swipeGesture.direction = .down
             playingFieldView.addGestureRecognizer(swipeGesture)
 
             let rotateGesture = UIRotationGestureRecognizer(target: self, action: #selector(shuffleCards(sender:)))
             playingFieldView.addGestureRecognizer(rotateGesture)
+             */
         }
     }
 
@@ -58,6 +60,7 @@ class SetViewController: UIViewController {
                 let card = SetCardView()
                 let tapGesture = UITapGestureRecognizer(target: self, action: #selector(touchCard(sender:)))
                 card.addGestureRecognizer(tapGesture)
+                card.alpha = 0
                 playingFieldView.addSubview(card)
             }
         } else {
@@ -89,6 +92,19 @@ class SetViewController: UIViewController {
 
     private func setCardAppearance(to cardView: SetCardView, from card: Card) {
         cardView.identifier = card.hashValue
+        cardView.textualRepresentation = card.description
+
+        //deal animation
+        if cardView.alpha == 0 {
+            UIViewPropertyAnimator.runningPropertyAnimator(
+                withDuration: 0.3,
+                delay: 0,
+                options: [],
+                animations: {
+                    cardView.alpha = 1
+            }
+            )
+        }
 
         switch card[.color] {
         case .first: cardView.color = SetCardView.Color.red
@@ -115,6 +131,18 @@ class SetViewController: UIViewController {
 
         if game.matchedCards.contains(card) {
             cardView.isMatched = .matched
+
+            //fly away animation
+            UIViewPropertyAnimator.runningPropertyAnimator(
+                withDuration: 0.3,
+                delay: 0,
+                options: [],
+                animations: {
+                    cardView.alpha = 0
+                },
+                completion: { finish in
+
+            })
         } else if game.selectedCards.count > 2 && game.selectedCards.contains(card) {
             cardView.isMatched = .mismatched
         } else {
@@ -136,10 +164,12 @@ class SetViewController: UIViewController {
                 let card = game.cardsBeingPlayed[index]
                 setCardAppearance(to: cardView, from: card)
             }
+
+            playingFieldView.isRearranged = false
         }
 
-        dealThreeMoreCardsButton.isEnabled = !game.deck.cards.isEmpty || isMatched
-        scoreLabel.text = "Score: \(game.score)"
+        deckButton.isEnabled = !game.deck.cards.isEmpty || isMatched
+        scoreLabel.text = "Sets: \(game.numberOfSets)"
     }
 
     override func viewDidLoad() {

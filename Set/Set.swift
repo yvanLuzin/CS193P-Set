@@ -14,6 +14,7 @@ class Set {
     private(set) var selectedCards = [Card]()
     private(set) var matchedCards = [Card]()
     private(set) var score = 0
+    private(set) var numberOfSets = 0
 
     func dealCards(_ amount: Int) {
         for _ in 0..<amount {
@@ -41,6 +42,7 @@ class Set {
         } else {
             matchedCards += selectedCards
             score += 3
+            numberOfSets += 1
         }
     }
 

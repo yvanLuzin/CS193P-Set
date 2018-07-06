@@ -86,6 +86,10 @@ class SetViewController: UIViewController {
                 card.addGestureRecognizer(tapGesture)
                 card.alpha = 0
                 playingFieldView.addSubview(card)
+
+                if let cardPositionInSubviews = playingFieldView.subviews.index(of: card) {
+                    playingFieldView.subviews[cardPositionInSubviews].center = getPosition(of: deckButton)
+                }
             }
         } else {
             for _ in 0..<abs(count) {
@@ -112,6 +116,13 @@ class SetViewController: UIViewController {
             updateViewFromModel()
         default: break
         }
+    }
+
+    private func getPosition(of view: UIView) -> CGPoint {
+        let y = view.superview?.center.y
+        let x = view.center.x
+
+        return CGPoint(x: x, y: y ?? 0.0)
     }
 
     private func setCardAppearance(to cardView: SetCardView, from card: Card) {
@@ -177,7 +188,6 @@ class SetViewController: UIViewController {
             }()
 
             view.addSubview(temporaryView)
-//            temporaryView.transform = CGAffineTransform.init(rotationAngle: 5.0)
             UIViewPropertyAnimator.runningPropertyAnimator(
                 withDuration: 1,
                 delay: 0.0,

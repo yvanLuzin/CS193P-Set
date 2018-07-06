@@ -15,6 +15,7 @@ extension Int {
     }
 }
 
+// TODO: remake into float
 extension CGFloat {
     var arc4random: CGFloat {
         let random = CGFloat(arc4random_uniform(UInt32(100))) / 100

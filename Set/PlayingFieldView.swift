@@ -16,6 +16,8 @@ class PlayingFieldView: UIView {
         return subviews.indices.count
     }
 
+    var initialPosition: CGRect?
+
     private func configureGrid() -> Grid {
         var cardSize: CGSize {
             switch numberOfCardsOnField {
@@ -42,7 +44,7 @@ class PlayingFieldView: UIView {
         grid = configureGrid()
         for index in subviews.indices {
             UIViewPropertyAnimator.runningPropertyAnimator(
-                withDuration: 0.3,
+                withDuration: SetViewController.Constants.animationTime,
                 delay: 0,
                 options: [],
                 animations: {

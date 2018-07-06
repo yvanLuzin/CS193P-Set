@@ -61,12 +61,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Set/SetViewController.swift"
-            timestampString = "552566275.20355"
+            timestampString = "552573563.642805"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "210"
-            endingLineNumber = "210"
-            landmarkName = "updateViewFromModel()"
+            startingLineNumber = "196"
+            endingLineNumber = "196"
+            landmarkName = "setCardAppearance(to:from:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -84,12 +84,10 @@ class SetViewController: UIViewController {
                 let card = SetCardView()
                 let tapGesture = UITapGestureRecognizer(target: self, action: #selector(touchCard(sender:)))
                 card.addGestureRecognizer(tapGesture)
+                card.center = getPosition(of: deckButton)
                 card.alpha = 0
-                playingFieldView.addSubview(card)
 
-                if let cardPositionInSubviews = playingFieldView.subviews.index(of: card) {
-                    playingFieldView.subviews[cardPositionInSubviews].center = getPosition(of: deckButton)
-                }
+                playingFieldView.addSubview(card)
             }
         } else {
             for _ in 0..<abs(count) {
@@ -202,7 +200,6 @@ class SetViewController: UIViewController {
             gravityBehavior.addItem(temporaryView)
 
             let push = UIPushBehavior(items: [temporaryView], mode: .instantaneous)
-//            push.angle = CGFloat.pi.arc4random
             push.pushDirection = CGVector(dx: 5.arc4random, dy: -5)
             push.magnitude = (temporaryView.bounds.width + temporaryView.bounds.height)/2 * 0.05
             push.action = { [unowned push] in
@@ -231,8 +228,6 @@ class SetViewController: UIViewController {
                 let card = game.cardsBeingPlayed[index]
                 setCardAppearance(to: cardView, from: card)
             }
-
-            playingFieldView.isRearranged = false
         }
 
         deckButton.isEnabled = !game.deck.cards.isEmpty || isMatched

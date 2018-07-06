@@ -25,15 +25,15 @@ class Set {
     }
 
     private func matchCard() {
-        matchedCards += selectedCards
-        return
-
         var matchingResults = [Int]()
 
         for feature in SetProperties.Feature.all {
             let amountOfMatchedFeatures = selectedCards.filter({ $0[feature] == selectedCards.first?[feature] }).count
             matchingResults.append(amountOfMatchedFeatures)
         }
+
+        //debug
+        matchingResults = [3]
 
         if matchingResults.contains(2) {
             score -= 5

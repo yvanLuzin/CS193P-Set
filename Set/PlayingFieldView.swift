@@ -40,7 +40,6 @@ class PlayingFieldView: UIView {
     }
 
     override func layoutSubviews() {
-        super.layoutSubviews()
         grid = configureGrid()
         for index in subviews.indices {
             UIViewPropertyAnimator.runningPropertyAnimator(
@@ -49,11 +48,39 @@ class PlayingFieldView: UIView {
                 options: [],
                 animations: {
                     self.subviews[index].frame = self.grid[index]!
-                },
+            },
                 completion: { finish in
-                    
-                }
+
+            }
             )
         }
     }
+
+    /*
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        if initialPosition == nil {
+            grid = configureGrid()
+            print("YEP")
+            for index in subviews.indices {
+                UIViewPropertyAnimator.runningPropertyAnimator(
+                    withDuration: SetViewController.Constants.animationTime,
+                    delay: 0,
+                    options: [],
+                    animations: {
+                        self.subviews[index].frame = self.grid[index]!
+                },
+                    completion: { finish in
+                        
+                }
+                )
+            }
+        } else {
+            for index in subviews.indices {
+                subviews[index].frame = initialPosition!
+            }
+        }
+    }
+    */
 }

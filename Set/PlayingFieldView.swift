@@ -49,7 +49,7 @@ class PlayingFieldView: UIView {
                     self.subviews[index].frame = self.grid[index]!
                 },
                 completion: { finish in
-                    self.isRearranged = true
+                    
                 }
             )
         }

@@ -24,7 +24,7 @@ class SetViewController: UIViewController {
     lazy var animator = UIDynamicAnimator(referenceView: view)
     lazy var gravityBehavior: UIGravityBehavior = {
         let behavior = UIGravityBehavior()
-        behavior.gravityDirection = CGVector(dx: 0, dy: 1)
+        behavior.gravityDirection = CGVector(dx: 0, dy: 3)
         animator.addBehavior(behavior)
         return behavior
     }()
@@ -121,7 +121,7 @@ class SetViewController: UIViewController {
         // MARK: Deal animation
         if cardView.alpha == 0 {
             UIViewPropertyAnimator.runningPropertyAnimator(
-                withDuration: 0.3,
+                withDuration: 0.5,
                 delay: 0,
                 options: [],
                 animations: {
@@ -181,7 +181,7 @@ class SetViewController: UIViewController {
             UIViewPropertyAnimator.runningPropertyAnimator(
                 withDuration: 1,
                 delay: 0.0,
-                options: [.repeat],
+                options: [.repeat, .curveEaseInOut],
                 animations: {
                     temporaryView.transform = CGAffineTransform.init(rotationAngle: CGFloat.pi.arc4random)
                 }
@@ -192,8 +192,8 @@ class SetViewController: UIViewController {
             gravityBehavior.addItem(temporaryView)
 
             let push = UIPushBehavior(items: [temporaryView], mode: .instantaneous)
-            push.angle = CGFloat.pi.arc4random
-//            push.pushDirection = CGVector(dx: 50.arc4random, dy: -50)
+//            push.angle = CGFloat.pi.arc4random
+            push.pushDirection = CGVector(dx: 5.arc4random, dy: -5)
             push.magnitude = (temporaryView.bounds.width + temporaryView.bounds.height)/2 * 0.05
             push.action = { [unowned push] in
                 push.dynamicAnimator?.removeBehavior(push)

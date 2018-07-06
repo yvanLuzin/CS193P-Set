@@ -22,28 +22,7 @@ class SetViewController: UIViewController {
     }
 
     lazy var animator = UIDynamicAnimator(referenceView: view)
-    lazy var gravityBehavior: UIGravityBehavior = {
-        let behavior = UIGravityBehavior()
-        behavior.gravityDirection = CGVector(dx: 0, dy: 3)
-        animator.addBehavior(behavior)
-        return behavior
-    }()
-
-    lazy var collisionBehavior: UICollisionBehavior = {
-        let behavior = UICollisionBehavior()
-        behavior.translatesReferenceBoundsIntoBoundary = true
-        behavior.collisionMode = .boundaries
-        animator.addBehavior(behavior)
-        return behavior
-    }()
-
-    lazy var itemBehavior: UIDynamicItemBehavior = {
-        let behavior = UIDynamicItemBehavior()
-        behavior.allowsRotation = true
-        behavior.elasticity = 1.0
-        behavior.resistance = 0.0
-        return behavior
-    }()
+    lazy var cardBehavior = CardBehavior(in: animator)
 
     @IBOutlet var scoreLabel: UILabel!
 
@@ -164,54 +143,44 @@ class SetViewController: UIViewController {
 
         if game.matchedCards.contains(card) {
             cardView.isMatched = .matched
-
             // MARK: Fly away animation
-            UIViewPropertyAnimator.runningPropertyAnimator(
-                withDuration: 0.3,
-                delay: 0,
-                options: [],
-                animations: {
-                    cardView.alpha = 0
-                },
-                completion: { finish in
-            })
-
-            let temporaryView: SetCardView = {
-                let view = SetCardView(frame: cardView.frame)
-                view.shape = cardView.shape
-                view.color = cardView.color
-                view.shading = cardView.shading
-                view.count = cardView.count
-                return view
-            }()
-
-            view.addSubview(temporaryView)
-            UIViewPropertyAnimator.runningPropertyAnimator(
-                withDuration: 1,
-                delay: 0.0,
-                options: [.repeat, .curveEaseInOut],
-                animations: {
-                    temporaryView.transform = CGAffineTransform.init(rotationAngle: CGFloat.pi.arc4random)
-                }
-            )
-
-            collisionBehavior.addItem(temporaryView)
-            itemBehavior.addItem(temporaryView)
-            gravityBehavior.addItem(temporaryView)
-
-            let push = UIPushBehavior(items: [temporaryView], mode: .instantaneous)
-            push.pushDirection = CGVector(dx: 5.arc4random, dy: -5)
-            push.magnitude = (temporaryView.bounds.width + temporaryView.bounds.height)/2 * 0.05
-            push.action = { [unowned push] in
-                push.dynamicAnimator?.removeBehavior(push)
-            }
-            animator.addBehavior(push)
+            flyAwayAnimation(for: cardView)
 
         } else if game.selectedCards.count > 2 && game.selectedCards.contains(card) {
             cardView.isMatched = .mismatched
         } else {
             cardView.isMatched = .idle
         }
+    }
+
+    private func flyAwayAnimation(for cardView: SetCardView) {
+        UIViewPropertyAnimator.runningPropertyAnimator(
+            withDuration: 0.3,
+            delay: 0,
+            options: [],
+            animations: {
+                cardView.alpha = 0
+            })
+
+        let temporaryView: SetCardView = {
+            let view = SetCardView(frame: cardView.frame)
+            view.shape = cardView.shape
+            view.color = cardView.color
+            view.shading = cardView.shading
+            view.count = cardView.count
+            return view
+        }()
+
+        view.addSubview(temporaryView)
+        UIViewPropertyAnimator.runningPropertyAnimator(
+            withDuration: 1,
+            delay: 0.0,
+            options: [.repeat, .curveEaseInOut],
+            animations: {
+                temporaryView.transform = CGAffineTransform.init(rotationAngle: CGFloat.pi.arc4random)
+            }
+        )
+        cardBehavior.addItem(temporaryView)
     }
 
     private func updateViewFromModel() {

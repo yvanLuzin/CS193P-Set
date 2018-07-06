@@ -12,6 +12,7 @@
 		BF12E57920EA1D0D000A738C /* ConcentrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF12E57520EA1D0D000A738C /* ConcentrationViewController.swift */; };
 		BF12E57A20EA1D0D000A738C /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF12E57620EA1D0D000A738C /* Theme.swift */; };
 		BF16B1DB20EF9325009A5D11 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF16B1DA20EF9325009A5D11 /* Constants.swift */; };
+		BF16B1DF20EFAC17009A5D11 /* CardBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF16B1DE20EFAC17009A5D11 /* CardBehavior.swift */; };
 		BF174F1520AAAD0600E476BC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF174F1420AAAD0600E476BC /* AppDelegate.swift */; };
 		BF174F1720AAAD0600E476BC /* SetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF174F1620AAAD0600E476BC /* SetViewController.swift */; };
 		BF174F1A20AAAD0600E476BC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF174F1820AAAD0600E476BC /* Main.storyboard */; };
@@ -52,6 +53,7 @@
 		BF12E57520EA1D0D000A738C /* ConcentrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConcentrationViewController.swift; sourceTree = "<group>"; };
 		BF12E57620EA1D0D000A738C /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		BF16B1DA20EF9325009A5D11 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		BF16B1DE20EFAC17009A5D11 /* CardBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardBehavior.swift; sourceTree = "<group>"; };
 		BF174F1120AAAD0600E476BC /* Set.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Set.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF174F1420AAAD0600E476BC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BF174F1620AAAD0600E476BC /* SetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetViewController.swift; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 				BF9D0CB620AB3CBD00A86D0D /* SetDeck.swift */,
 				BF9D0CB220AAD59900A86D0D /* Card.swift */,
 				BF9D0CB420AAD8E800A86D0D /* Set.swift */,
+				BF16B1DE20EFAC17009A5D11 /* CardBehavior.swift */,
 			);
 			path = Set;
 			sourceTree = "<group>";
@@ -326,6 +329,7 @@
 				BF9D0CB320AAD59900A86D0D /* Card.swift in Sources */,
 				BF16B1DB20EF9325009A5D11 /* Constants.swift in Sources */,
 				BF12E57A20EA1D0D000A738C /* Theme.swift in Sources */,
+				BF16B1DF20EFAC17009A5D11 /* CardBehavior.swift in Sources */,
 				BF95C55D20C3F8860082E0F3 /* SetCardView.swift in Sources */,
 				BF95C56320C41DF70082E0F3 /* PlayingFieldView.swift in Sources */,
 				BF12E57920EA1D0D000A738C /* ConcentrationViewController.swift in Sources */,

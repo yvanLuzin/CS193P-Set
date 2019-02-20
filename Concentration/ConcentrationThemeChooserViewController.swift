@@ -12,11 +12,14 @@ class ConcentrationThemeChooserViewController: UIViewController, UISplitViewCont
 
     override func viewDidLoad() {
         super.viewDidLoad()
-//        if let cvc = splitViewDetailConcentrationViewController {
-//            cvc.theme = themes[0]
-//        }
+        /*
+        if let cvc = splitViewDetailConcentrationViewController {
+            cvc.theme = themes[0]
+        }
+        */
     }
 
+    // comes out of interface builder
     override func awakeFromNib() {
         splitViewController?.delegate = self
     }

@@ -32,9 +32,6 @@ class Set {
             matchingResults.append(amountOfMatchedFeatures)
         }
 
-        //debug
-        matchingResults = [3]
-
         if matchingResults.contains(2) {
             score -= 5
         } else {
@@ -42,6 +39,12 @@ class Set {
             score += 3
             numberOfSets += 1
         }
+    }
+
+    private func matchAnyCard() {
+        matchedCards += selectedCards
+        score += 3
+        numberOfSets += 1
     }
 
     func selectCard(_ index: Int) {
@@ -62,7 +65,8 @@ class Set {
         }
 
         if selectedCards.count == 3 {
-            matchCard()
+//            matchCard()
+            matchAnyCard()
         }
     }
 

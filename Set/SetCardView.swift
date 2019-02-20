@@ -220,11 +220,11 @@ extension SetCardView {
     }
 
     struct Color {
-        static var red = #colorLiteral(red: 1, green: 0.233825969, blue: 0.4614375874, alpha: 1)
-        static var green = #colorLiteral(red: 0.4215252755, green: 0.7735763008, blue: 0.2147679271, alpha: 1)
-        static var purple = #colorLiteral(red: 0.5041278131, green: 0.3157204778, blue: 0.7055400032, alpha: 1)
-        static var outline = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
-        static var confirm = #colorLiteral(red: 0.664418355, green: 1, blue: 0.8068742257, alpha: 1)
-        static var denied = #colorLiteral(red: 1, green: 0.6733556793, blue: 0.6629678455, alpha: 1)
+        private(set) static var red = #colorLiteral(red: 1, green: 0.233825969, blue: 0.4614375874, alpha: 1)
+        private(set) static var green = #colorLiteral(red: 0.4215252755, green: 0.7735763008, blue: 0.2147679271, alpha: 1)
+        private(set) static var purple = #colorLiteral(red: 0.5041278131, green: 0.3157204778, blue: 0.7055400032, alpha: 1)
+        private(set) static var outline = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
+        private(set) static var confirm = #colorLiteral(red: 0.664418355, green: 1, blue: 0.8068742257, alpha: 1)
+        private(set) static var denied = #colorLiteral(red: 1, green: 0.6733556793, blue: 0.6629678455, alpha: 1)
     }
 }

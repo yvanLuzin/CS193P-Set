@@ -19,6 +19,7 @@ class PlayingFieldView: UIView {
     var initialPosition: CGRect?
 
     private func configureGrid() -> Grid {
+        /*
         var cardSize: CGSize {
             switch numberOfCardsOnField {
             case 1...16:
@@ -36,11 +37,26 @@ class PlayingFieldView: UIView {
             }
         }
 
-        return Grid(layout: .fixedCellSize(cardSize), frame: self.bounds)
+        var grid = Grid(layout: .fixedCellSize(cardSize), frame: self.bounds)
+         */
+
+        var cardRatio: CGFloat {
+            return self.bounds.width / self.bounds.height
+        }
+
+        var grid = Grid(layout: .aspectRatio(cardRatio), frame: self.bounds)
+        grid.cellCount = numberOfCardsOnField > 12 ? numberOfCardsOnField : 12
+
+        print("cards: \(numberOfCardsOnField), cells: \(grid.cellCount), cols: \(grid.dimensions.columnCount)")
+
+        return grid
     }
 
     override func layoutSubviews() {
         grid = configureGrid()
+
+        guard numberOfCardsOnField <= grid.cellCount else { return }
+
         for index in subviews.indices {
             UIViewPropertyAnimator.runningPropertyAnimator(
                 withDuration: SetViewController.Constants.animationTime,

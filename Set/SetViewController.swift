@@ -31,14 +31,14 @@ class SetViewController: UIViewController {
     @IBOutlet var playingFieldView: PlayingFieldView!
     {
         didSet {
-            /*
+
             let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(dealThreeMoreCards(_:)))
             swipeGesture.direction = .down
             playingFieldView.addGestureRecognizer(swipeGesture)
 
             let rotateGesture = UIRotationGestureRecognizer(target: self, action: #selector(shuffleCards(sender:)))
             playingFieldView.addGestureRecognizer(rotateGesture)
-             */
+            
         }
     }
 
@@ -63,6 +63,7 @@ class SetViewController: UIViewController {
                 let card = SetCardView()
                 let tapGesture = UITapGestureRecognizer(target: self, action: #selector(touchCard(sender:)))
                 card.addGestureRecognizer(tapGesture)
+//                card.convert(card.frame, to: deckButton)
                 card.center = getPosition(of: deckButton)
                 card.alpha = 0
 
@@ -143,6 +144,7 @@ class SetViewController: UIViewController {
 
         if game.matchedCards.contains(card) {
             cardView.isMatched = .matched
+
             // MARK: Fly away animation
             flyAwayAnimation(for: cardView)
 
@@ -200,7 +202,7 @@ class SetViewController: UIViewController {
         }
 
         deckButton.isEnabled = !game.deck.cards.isEmpty || isMatched
-        scoreLabel.text = "Sets: \(game.numberOfSets)"
+//        scoreLabel.text = "Sets:" // \(game.numberOfSets)"
     }
 
     override func viewDidLoad() {

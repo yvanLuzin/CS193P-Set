@@ -31,14 +31,12 @@ class SetViewController: UIViewController {
     @IBOutlet var playingFieldView: PlayingFieldView!
     {
         didSet {
-
             let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(dealThreeMoreCards(_:)))
             swipeGesture.direction = .down
             playingFieldView.addGestureRecognizer(swipeGesture)
 
             let rotateGesture = UIRotationGestureRecognizer(target: self, action: #selector(shuffleCards(sender:)))
             playingFieldView.addGestureRecognizer(rotateGesture)
-            
         }
     }
 
@@ -107,7 +105,7 @@ class SetViewController: UIViewController {
         cardView.identifier = card.hashValue
         cardView.textualRepresentation = card.description
 
-        // MARK: Deal animation
+        //MARK: Deal animation
         if cardView.alpha == 0 {
             UIViewPropertyAnimator.runningPropertyAnimator(
                 withDuration: 0.5,
@@ -115,29 +113,29 @@ class SetViewController: UIViewController {
                 options: [],
                 animations: {
                     cardView.alpha = 1
-            }
+                }
             )
         }
 
         switch card[.color] {
-        case .first: cardView.color = SetCardView.Color.red
-        case .second: cardView.color = SetCardView.Color.green
-        case .third: cardView.color = SetCardView.Color.purple
+            case .first: cardView.color = SetCardView.Color.red
+            case .second: cardView.color = SetCardView.Color.green
+            case .third: cardView.color = SetCardView.Color.purple
         }
         switch card[.shape] {
-        case .first: cardView.shape = SetCardView.Shape.diamond
-        case .second: cardView.shape = SetCardView.Shape.squiggle
-        case .third: cardView.shape = SetCardView.Shape.oval
+            case .first: cardView.shape = SetCardView.Shape.diamond
+            case .second: cardView.shape = SetCardView.Shape.squiggle
+            case .third: cardView.shape = SetCardView.Shape.oval
         }
         switch card[.shading] {
-        case .first: cardView.shading = SetCardView.Shading.solid
-        case .second: cardView.shading = SetCardView.Shading.striped
-        case .third: cardView.shading = SetCardView.Shading.open
+            case .first: cardView.shading = SetCardView.Shading.solid
+            case .second: cardView.shading = SetCardView.Shading.striped
+            case .third: cardView.shading = SetCardView.Shading.open
         }
         switch card[.count] {
-        case .first: cardView.count = SetCardView.Count.one.rawValue
-        case .second: cardView.count = SetCardView.Count.two.rawValue
-        case .third: cardView.count = SetCardView.Count.three.rawValue
+            case .first: cardView.count = SetCardView.Count.one.rawValue
+            case .second: cardView.count = SetCardView.Count.two.rawValue
+            case .third: cardView.count = SetCardView.Count.three.rawValue
         }
 
         cardView.isSelected = game.selectedCards.contains(card)
@@ -145,7 +143,7 @@ class SetViewController: UIViewController {
         if game.matchedCards.contains(card) {
             cardView.isMatched = .matched
 
-            // MARK: Fly away animation
+            //MARK: Fly away animation
             flyAwayAnimation(for: cardView)
 
         } else if game.selectedCards.count > 2 && game.selectedCards.contains(card) {
@@ -164,6 +162,7 @@ class SetViewController: UIViewController {
                 cardView.alpha = 0
             })
 
+
         let temporaryView: SetCardView = {
             let view = SetCardView(frame: cardView.frame)
             view.shape = cardView.shape
@@ -173,6 +172,11 @@ class SetViewController: UIViewController {
             return view
         }()
 
+        var snapPosition: CGPoint {
+            let newPosition = scoreLabel.convert(scoreLabel.bounds, to: view)
+            return CGPoint(x: newPosition.midX , y: newPosition.midY)
+        }
+
         view.addSubview(temporaryView)
         UIViewPropertyAnimator.runningPropertyAnimator(
             withDuration: 1,
@@ -180,9 +184,14 @@ class SetViewController: UIViewController {
             options: [.repeat, .curveEaseInOut],
             animations: {
                 temporaryView.transform = CGAffineTransform.init(rotationAngle: CGFloat.pi.arc4random)
+                temporaryView.bounds.size.width = self.scoreLabel.bounds.width
+                temporaryView.bounds.size.height = self.scoreLabel.bounds.height
             }
         )
         cardBehavior.addItem(temporaryView)
+        cardBehavior.snapPosition = snapPosition
+        // TODO: Should be made into view with Autolayout
+
     }
 
     private func updateViewFromModel() {

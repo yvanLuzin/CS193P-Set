@@ -13,3 +13,7 @@ extension SetViewController {
         static var animationTime = 0.3
     }
 }
+
+struct Options {
+    static var isDebug = true
+}

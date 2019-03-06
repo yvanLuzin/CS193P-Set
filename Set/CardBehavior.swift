@@ -9,6 +9,8 @@
 import UIKit
 
 class CardBehavior: UIDynamicBehavior {
+    var snapPosition: CGPoint = CGPoint(x: 0, y: 0)
+
     lazy var gravityBehavior: UIGravityBehavior = {
         let behavior = UIGravityBehavior()
         behavior.gravityDirection = CGVector(dx: 0, dy: 3)
@@ -30,10 +32,21 @@ class CardBehavior: UIDynamicBehavior {
         return behavior
     }()
 
+    private weak var timer: Timer?
+
+    private func snapBehavior(_ item: UIDynamicItem) {
+        let snap = UISnapBehavior(item: item, snapTo: snapPosition)
+        snap.damping = 1.0
+        snap.action = { [unowned snap] in
+            snap.dynamicAnimator?.removeBehavior(snap)
+        }
+        addChildBehavior(snap)
+    }
+
     private func push(_ item: UIDynamicItem) {
         let push = UIPushBehavior(items: [item], mode: .instantaneous)
         push.pushDirection = CGVector(dx: 5.arc4random, dy: -5)
-        push.magnitude = (item.bounds.width + item.bounds.height)/2 * 0.05
+        push.magnitude = (item.bounds.width + item.bounds.height) * 0.1
         push.action = { [unowned push] in
             push.dynamicAnimator?.removeBehavior(push)
         }
@@ -45,6 +58,13 @@ class CardBehavior: UIDynamicBehavior {
         gravityBehavior.addItem(item)
         itemBehavior.addItem(item)
         push(item)
+
+        timer = Timer.scheduledTimer(
+            withTimeInterval: 0.35,
+            repeats: false) { timer in
+                self.snapBehavior(item)
+                self.removeItem(item)
+        }
     }
 
     func removeItem(_ item: UIDynamicItem) {

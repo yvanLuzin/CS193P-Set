@@ -65,8 +65,11 @@ class Set {
         }
 
         if selectedCards.count == 3 {
-//            matchCard()
-            matchAnyCard()
+            if Options.isDebug {
+                matchAnyCard()
+            } else {
+                matchCard()
+            }
         }
     }
 

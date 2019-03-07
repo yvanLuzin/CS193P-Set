@@ -13,7 +13,7 @@ struct SetConstants {
     static var numberOfCardsToDeal = 3
 }
 
-class SetViewController: UIViewController {
+class SetViewController: UIViewController, UIDynamicAnimatorDelegate {
 
     var game = Set()
 
@@ -25,6 +25,7 @@ class SetViewController: UIViewController {
     lazy var cardBehavior = CardBehavior(in: animator)
 
     @IBOutlet var scoreLabel: UILabel!
+    @IBOutlet var scoreView: UIView!
 
     @IBOutlet var deckButton: UIButton!
 
@@ -61,7 +62,6 @@ class SetViewController: UIViewController {
                 let card = SetCardView()
                 let tapGesture = UITapGestureRecognizer(target: self, action: #selector(touchCard(sender:)))
                 card.addGestureRecognizer(tapGesture)
-//                card.convert(card.frame, to: deckButton)
                 card.center = getPosition(of: deckButton)
                 card.alpha = 0
 
@@ -162,14 +162,17 @@ class SetViewController: UIViewController {
                 cardView.alpha = 0
             })
 
+        cardBehavior = CardBehavior(in: animator)
 
         let temporaryView: SetCardView = {
-            let view = SetCardView(frame: cardView.frame)
-            view.shape = cardView.shape
-            view.color = cardView.color
-            view.shading = cardView.shading
-            view.count = cardView.count
-            return view
+            let newFrame = view.convert(cardView.frame, to: scoreView)
+            let temporaryView = SetCardView(frame: newFrame)
+            temporaryView.shape = cardView.shape
+            temporaryView.color = cardView.color
+            temporaryView.shading = cardView.shading
+            temporaryView.count = cardView.count
+            temporaryView.layer.borderWidth = 1.0
+            return temporaryView
         }()
 
         var snapPosition: CGPoint {
@@ -177,21 +180,27 @@ class SetViewController: UIViewController {
             return CGPoint(x: newPosition.midX , y: newPosition.midY)
         }
 
-        view.addSubview(temporaryView)
+        scoreView.addSubview(temporaryView)
+        cardBehavior.addItem(temporaryView)
+        cardBehavior.snapPosition = snapPosition
+
         UIViewPropertyAnimator.runningPropertyAnimator(
-            withDuration: 1,
+            withDuration: 1.0,
             delay: 0.0,
             options: [.repeat, .curveEaseInOut],
             animations: {
                 temporaryView.transform = CGAffineTransform.init(rotationAngle: CGFloat.pi.arc4random)
-                temporaryView.bounds.size.width = self.scoreLabel.bounds.width
-                temporaryView.bounds.size.height = self.scoreLabel.bounds.height
+                temporaryView.bounds.size.width = CGFloat(CardPile.Constants.width)
+                temporaryView.bounds.size.height = CGFloat(CardPile.Constants.height)
+            },
+            completion: { card in
+                 temporaryView.transform = CGAffineTransform.identity
             }
         )
-        cardBehavior.addItem(temporaryView)
-        cardBehavior.snapPosition = snapPosition
-        // TODO: Should be made into view with Autolayout
+    }
 
+    func dynamicAnimatorDidPause(_ animator: UIDynamicAnimator) {
+        animator.removeAllBehaviors()
     }
 
     private func updateViewFromModel() {
@@ -217,6 +226,7 @@ class SetViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         updateViewFromModel()
+        animator.delegate = self
     }
 
     override func didReceiveMemoryWarning() {

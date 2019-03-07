@@ -14,6 +14,13 @@ extension SetViewController {
     }
 }
 
+extension CardPile {
+    struct Constants {
+        static var width = 150
+        static var height = 50
+    }
+}
+
 struct Options {
     static var isDebug = true
 }

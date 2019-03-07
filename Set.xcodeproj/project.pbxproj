@@ -28,6 +28,7 @@
 		BF9D0CB520AAD8E800A86D0D /* Set.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9D0CB420AAD8E800A86D0D /* Set.swift */; };
 		BF9D0CB720AB3CBD00A86D0D /* SetDeck.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9D0CB620AB3CBD00A86D0D /* SetDeck.swift */; };
 		BF9D0CB920AB42D000A86D0D /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9D0CB820AB42D000A86D0D /* Extensions.swift */; };
+		BFD9F148222FCD2F00BC2578 /* CardPile.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD9F147222FCD2F00BC2578 /* CardPile.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +76,7 @@
 		BF9D0CB420AAD8E800A86D0D /* Set.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Set.swift; sourceTree = "<group>"; };
 		BF9D0CB620AB3CBD00A86D0D /* SetDeck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetDeck.swift; sourceTree = "<group>"; };
 		BF9D0CB820AB42D000A86D0D /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		BFD9F147222FCD2F00BC2578 /* CardPile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardPile.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,6 +165,7 @@
 			children = (
 				BF174F1620AAAD0600E476BC /* SetViewController.swift */,
 				BF95C56220C41DF70082E0F3 /* PlayingFieldView.swift */,
+				BFD9F147222FCD2F00BC2578 /* CardPile.swift */,
 				BF95C55C20C3F8860082E0F3 /* SetCardView.swift */,
 				BF174F2020AAAD0700E476BC /* Info.plist */,
 				BF9D0CB620AB3CBD00A86D0D /* SetDeck.swift */,
@@ -337,6 +340,7 @@
 				BF95C56320C41DF70082E0F3 /* PlayingFieldView.swift in Sources */,
 				BF12E57920EA1D0D000A738C /* ConcentrationViewController.swift in Sources */,
 				BF9D0CB720AB3CBD00A86D0D /* SetDeck.swift in Sources */,
+				BFD9F148222FCD2F00BC2578 /* CardPile.swift in Sources */,
 				BF174F1520AAAD0600E476BC /* AppDelegate.swift in Sources */,
 				BF9D0CB520AAD8E800A86D0D /* Set.swift in Sources */,
 				BF9D0CB920AB42D000A86D0D /* Extensions.swift in Sources */,

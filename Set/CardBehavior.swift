@@ -34,12 +34,12 @@ class CardBehavior: UIDynamicBehavior {
 
     private weak var timer: Timer?
 
-    private func snapBehavior(_ item: UIDynamicItem) {
+    var snapBehavior: UISnapBehavior!
+
+    private func snap(_ item: UIDynamicItem) {
         let snap = UISnapBehavior(item: item, snapTo: snapPosition)
         snap.damping = 1.0
-        snap.action = { [unowned snap] in
-            snap.dynamicAnimator?.removeBehavior(snap)
-        }
+        snapBehavior = snap
         addChildBehavior(snap)
     }
 
@@ -62,8 +62,7 @@ class CardBehavior: UIDynamicBehavior {
         timer = Timer.scheduledTimer(
             withTimeInterval: 0.35,
             repeats: false) { timer in
-                self.snapBehavior(item)
-                self.removeItem(item)
+                self.snap(item)
         }
     }
 

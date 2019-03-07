@@ -50,7 +50,7 @@
                                 <rect key="frame" x="16" y="637" width="382" height="30"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hZy-Su-eAW">
-                                        <rect key="frame" x="0.0" y="0.0" width="122" height="30"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="187" height="30"/>
                                         <state key="normal" title="Deck"/>
                                         <connections>
                                             <action selector="dealThreeMoreCards:" destination="BYZ-38-t0r" eventType="touchUpInside" id="c5R-0T-bgb"/>
@@ -58,18 +58,36 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S4H-lg-PBW">
                                         <rect key="frame" x="130" y="0.0" width="122" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="New Game"/>
                                         <connections>
                                             <action selector="newGame:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ec2-r3-moO"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sets" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vbQ-3k-bWk">
-                                        <rect key="frame" x="260" y="0.0" width="122" height="30"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sco-Yd-Nu0" customClass="CardPile" customModule="Set" customModuleProvider="target">
+                                        <rect key="frame" x="195" y="0.0" width="187" height="30"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sets" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vbQ-3k-bWk">
+                                                <rect key="frame" x="0.0" y="0.0" width="187" height="30"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstItem="vbQ-3k-bWk" firstAttribute="top" secondItem="sco-Yd-Nu0" secondAttribute="top" id="7Cb-iO-173"/>
+                                            <constraint firstAttribute="trailing" secondItem="vbQ-3k-bWk" secondAttribute="trailing" id="Hkv-SG-kCZ"/>
+                                            <constraint firstItem="vbQ-3k-bWk" firstAttribute="leading" secondItem="sco-Yd-Nu0" secondAttribute="leading" id="OpF-hN-ptD"/>
+                                            <constraint firstAttribute="bottom" secondItem="vbQ-3k-bWk" secondAttribute="bottom" id="bha-Te-c34"/>
+                                        </constraints>
+                                    </view>
                                 </subviews>
+                                <variation key="default">
+                                    <mask key="subviews">
+                                        <exclude reference="S4H-lg-PBW"/>
+                                    </mask>
+                                </variation>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -90,11 +108,12 @@
                         <outlet property="deckButton" destination="hZy-Su-eAW" id="YCj-xe-BgW"/>
                         <outlet property="playingFieldView" destination="fIn-nT-k4s" id="rHM-h8-32m"/>
                         <outlet property="scoreLabel" destination="vbQ-3k-bWk" id="NlS-L2-K7p"/>
+                        <outlet property="scoreView" destination="sco-Yd-Nu0" id="epZ-M1-fBu"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-575" y="-34"/>
+            <point key="canvasLocation" x="-575.36231884057975" y="-34.239130434782609"/>
         </scene>
         <!--Concentration View Controller-->
         <scene sceneID="5Xd-7S-ZWX">

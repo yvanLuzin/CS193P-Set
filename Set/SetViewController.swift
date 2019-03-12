@@ -52,15 +52,13 @@ class SetViewController: UIViewController {
         updateViewFromModel()
     }
 
-    private func changeNumberOfCardsOnField(by count: Int) {
+    private func changeNumberOfCardsOnField(by count: Int, action: @escaping () -> Void) {
         if count >= 0 {
             for _ in 0..<count {
                 let card = SetCardView()
                 let tapGesture = UITapGestureRecognizer(target: self, action: #selector(touchCard(sender:)))
                 card.addGestureRecognizer(tapGesture)
-//                card.center = getPosition(of: deckButton)
                 card.alpha = 0
-
                 playingFieldView.addSubview(card)
             }
         } else {
@@ -68,6 +66,22 @@ class SetViewController: UIViewController {
                 playingFieldView.subviews.last?.removeFromSuperview()
             }
         }
+
+        playingFieldView.layoutIfNeeded()
+
+        UIViewPropertyAnimator.runningPropertyAnimator(
+            withDuration: Set.Constants.Animation.layout,
+            delay: 0,
+            options: [],
+            animations: {
+                for index in self.playingFieldView.subviews.indices {
+                    self.playingFieldView.subviews[index].frame = self.playingFieldView.grid[index]!
+                }
+        },
+            completion: { finish in
+                action()
+        }
+        )
     }
 
     @objc private func touchCard(sender: UITapGestureRecognizer) {
@@ -101,12 +115,8 @@ class SetViewController: UIViewController {
         cardView.identifier = card.hashValue
         cardView.textualRepresentation = card.description
 
-        if (playingFieldView.isRearranged == true) {
-            dealAnimation(for: cardView)
-        } else {
-            delayedCards.append(cardView)
-            print("Delayed animation stack: \(delayedCards.count)")
-        }
+        //MARK: Deal animation
+        dealAnimation(for: cardView)
 
         switch card[.color] {
             case .first: cardView.color = SetCardView.Color.red
@@ -146,8 +156,6 @@ class SetViewController: UIViewController {
 
     private func dealAnimation(for cardView: SetCardView) {
         if cardView.alpha == 0 {
-            print("Deal animation")
-
             UIViewPropertyAnimator.runningPropertyAnimator(
                 withDuration: Set.Constants.Animation.deal,
                 delay: 0,
@@ -160,7 +168,6 @@ class SetViewController: UIViewController {
     }
 
     private func flyAwayAnimation(for cardView: SetCardView) {
-        print("Fly away animation")
         UIViewPropertyAnimator.runningPropertyAnimator(
             withDuration: Set.Constants.Animation.flyaway,
             delay: 0,
@@ -225,18 +232,17 @@ class SetViewController: UIViewController {
      */
 
     private func updateViewFromModel() {
-
         var numberOfCards: Int {
             let result = game.cardsBeingPlayed.count - playingFieldView.subviews.count
             return result
         }
 
-        changeNumberOfCardsOnField(by: numberOfCards)
-
-        for index in playingFieldView.subviews.indices {
-            if let cardView = (playingFieldView.subviews[index] as? SetCardView) {
-                let card = game.cardsBeingPlayed[index]
-                setCardAppearance(to: cardView, from: card)
+        changeNumberOfCardsOnField(by: numberOfCards) {
+            for index in self.playingFieldView.subviews.indices {
+                if let cardView = (self.playingFieldView.subviews[index] as? SetCardView) {
+                    let card = self.game.cardsBeingPlayed[index]
+                    self.setCardAppearance(to: cardView, from: card) //this would be called by delegate of playing field view
+                }
             }
         }
 
@@ -248,8 +254,8 @@ class SetViewController: UIViewController {
         super.viewDidLoad()
 
         animator.delegate = self
-        playingFieldView.delegate = self
         updateViewFromModel()
+        playingFieldView.layoutIfNeeded()
     }
 
     override func didReceiveMemoryWarning() {
@@ -260,17 +266,5 @@ class SetViewController: UIViewController {
 extension SetViewController: UIDynamicAnimatorDelegate {
     func dynamicAnimatorDidPause(_ animator: UIDynamicAnimator) {
         //TODO: Flip views
-    }
-}
-
-extension SetViewController: PlayingFieldViewDelegate {
-    func playingFieldViewFinishedLayout() {
-        print("Completion handler")
-        guard !delayedCards.isEmpty else { return }
-
-        delayedCards.forEach { (card) in
-            dealAnimation(for: card)
-        }
-        delayedCards = []
     }
 }

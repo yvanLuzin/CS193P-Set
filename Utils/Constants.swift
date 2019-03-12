@@ -13,7 +13,7 @@ extension Set {
         struct Animation {
             static var deal = 1.0
             static var flyaway = 1.0
-            static var layout = 0.3 //0.3
+            static var layout = 1.0 //0.3
         }
         static var startingCardCount = 12 //12
         static var numberOfCardsToDeal = 3 //3

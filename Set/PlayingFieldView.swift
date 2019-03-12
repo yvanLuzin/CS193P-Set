@@ -25,11 +25,8 @@ class PlayingFieldView: UIView {
     }
 
     override func layoutSubviews() {
-        print("layout subviews")
         super.layoutSubviews()
         grid = configureGrid()
         guard numberOfCardsOnField <= grid.cellCount else { return }
     }
-
-    
 }

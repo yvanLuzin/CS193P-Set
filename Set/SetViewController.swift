@@ -241,7 +241,7 @@ class SetViewController: UIViewController {
             for index in self.playingFieldView.subviews.indices {
                 if let cardView = (self.playingFieldView.subviews[index] as? SetCardView) {
                     let card = self.game.cardsBeingPlayed[index]
-                    self.setCardAppearance(to: cardView, from: card) //this would be called by delegate of playing field view
+                    self.setCardAppearance(to: cardView, from: card)
                 }
             }
         }
@@ -255,7 +255,11 @@ class SetViewController: UIViewController {
 
         animator.delegate = self
         updateViewFromModel()
-        playingFieldView.layoutIfNeeded()
+    }
+
+    override func viewDidLayoutSubviews() {
+        playingFieldView.setNeedsLayout()
+        updateViewFromModel()
     }
 
     override func didReceiveMemoryWarning() {

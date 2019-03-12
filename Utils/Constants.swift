@@ -8,15 +8,21 @@
 
 import Foundation
 
-extension SetViewController {
+extension Set {
     struct Constants {
-        static var animationTime = 0.3
+        struct Animation {
+            static var deal = 1.0
+            static var flyaway = 1.0
+            static var layout = 0.3 //0.3
+        }
+        static var startingCardCount = 12 //12
+        static var numberOfCardsToDeal = 3 //3
     }
 }
 
 extension CardPile {
     struct Constants {
-        static var width = 150
+        static var width = 85
         static var height = 50
     }
 }

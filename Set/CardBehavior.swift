@@ -40,6 +40,9 @@ class CardBehavior: UIDynamicBehavior {
         let snap = UISnapBehavior(item: item, snapTo: snapPosition)
         snap.damping = 1.0
         snapBehavior = snap
+        snap.action = { [unowned snap] in
+            snap.dynamicAnimator?.removeBehavior(snap)
+        }
         addChildBehavior(snap)
     }
 

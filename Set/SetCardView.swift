@@ -27,8 +27,6 @@ class SetCardView: UIView {
 
     var isMatched: matchedState = .idle
 
-//    private(set) var gridBounds: CGRect?
-
     override func draw(_ rect: CGRect) {
         let roundedRect = UIBezierPath(
             roundedRect: bounds.insetBy(dx: (bounds.width+bounds.height)*0.008, dy: (bounds.width+bounds.height)*0.008),

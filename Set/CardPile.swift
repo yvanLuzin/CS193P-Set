@@ -24,10 +24,9 @@ class CardPile: UIView {
     }
 
     override func layoutSubviews() {
-        print("Card pile layout")
-        subviews.forEach { (card ) in
-            card.frame = CGRect(x: 0, y: 0, width: self.frame.width , height: self.frame.height)
-            card.bounds = CGRect(x: 0, y: 0, width: CardPile.Constants.width , height: CardPile.Constants.height)
-        }
+//        subviews.forEach { (card ) in
+//            card.frame = CGRect(x: 0, y: 0, width: self.frame.width , height: self.frame.height)
+//            card.bounds = CGRect(x: 0, y: 0, width: CardPile.Constants.width , height: CardPile.Constants.height)
+//        }
     }
 }

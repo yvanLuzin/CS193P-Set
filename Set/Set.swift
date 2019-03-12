@@ -10,7 +10,7 @@ import Foundation
 
 class Set {
     private(set) var deck = SetDeck()
-    private(set) var cardsBeingPlayed = [Card]() //should remove?
+    private(set) var cardsBeingPlayed = [Card]()
     private(set) var selectedCards = [Card]()
     private(set) var matchedCards = [Card]()
     private(set) var score = 0
@@ -96,12 +96,12 @@ class Set {
         cardsBeingPlayed.removeAll()
         selectedCards.removeAll()
         matchedCards.removeAll()
-        dealCards(SetConstants.startingCardCount)
+        dealCards(Set.Constants.startingCardCount)
         score = 0
         numberOfSets = 0
     }
 
     init() {
-        dealCards(SetConstants.startingCardCount)
+        dealCards(Set.Constants.startingCardCount)
     }
 }

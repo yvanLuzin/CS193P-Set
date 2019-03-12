@@ -8,21 +8,16 @@
 
 import UIKit
 
-struct SetConstants {
-    static var startingCardCount = 12
-    static var numberOfCardsToDeal = 3
-}
-
-class SetViewController: UIViewController, UIDynamicAnimatorDelegate {
-
+class SetViewController: UIViewController {
     var game = Set()
+
+    private var delayedCards: [SetCardView] = []
 
     var isMatched: Bool {
         return game.selectedCards.count > 0 && game.selectedCards.suffix(3) == game.matchedCards.suffix(3)
     }
 
     lazy var animator = UIDynamicAnimator(referenceView: view)
-    lazy var cardBehavior = CardBehavior(in: animator)
 
     @IBOutlet var scoreLabel: UILabel!
     @IBOutlet var scoreView: UIView!
@@ -42,10 +37,11 @@ class SetViewController: UIViewController, UIDynamicAnimatorDelegate {
     }
 
     @IBAction func dealThreeMoreCards(_ sender: UIButton) {
+        //Can move all this to model
         if isMatched {
             game.replaceCards()
         } else {
-            game.dealCards(SetConstants.numberOfCardsToDeal)
+            game.dealCards(Set.Constants.numberOfCardsToDeal)
         }
         updateViewFromModel()
     }
@@ -62,7 +58,7 @@ class SetViewController: UIViewController, UIDynamicAnimatorDelegate {
                 let card = SetCardView()
                 let tapGesture = UITapGestureRecognizer(target: self, action: #selector(touchCard(sender:)))
                 card.addGestureRecognizer(tapGesture)
-                card.center = getPosition(of: deckButton)
+//                card.center = getPosition(of: deckButton)
                 card.alpha = 0
 
                 playingFieldView.addSubview(card)
@@ -105,16 +101,11 @@ class SetViewController: UIViewController, UIDynamicAnimatorDelegate {
         cardView.identifier = card.hashValue
         cardView.textualRepresentation = card.description
 
-        //MARK: Deal animation
-        if cardView.alpha == 0 {
-            UIViewPropertyAnimator.runningPropertyAnimator(
-                withDuration: 0.5,
-                delay: 0,
-                options: [],
-                animations: {
-                    cardView.alpha = 1
-                }
-            )
+        if (playingFieldView.isRearranged == true) {
+            dealAnimation(for: cardView)
+        } else {
+            delayedCards.append(cardView)
+            print("Delayed animation stack: \(delayedCards.count)")
         }
 
         switch card[.color] {
@@ -153,7 +144,34 @@ class SetViewController: UIViewController, UIDynamicAnimatorDelegate {
         }
     }
 
+    private func dealAnimation(for cardView: SetCardView) {
+        if cardView.alpha == 0 {
+            print("Deal animation")
+
+            UIViewPropertyAnimator.runningPropertyAnimator(
+                withDuration: Set.Constants.Animation.deal,
+                delay: 0,
+                options: [],
+                animations: {
+                    cardView.alpha = 1
+            }
+            )
+        }
+    }
+
     private func flyAwayAnimation(for cardView: SetCardView) {
+        print("Fly away animation")
+        UIViewPropertyAnimator.runningPropertyAnimator(
+            withDuration: Set.Constants.Animation.flyaway,
+            delay: 0,
+            options: [],
+            animations: {
+                cardView.alpha = 0
+        })
+    }
+
+    /*
+    private func flyAwayAnimationOld(for cardView: SetCardView) {
         UIViewPropertyAnimator.runningPropertyAnimator(
             withDuration: 0.3,
             delay: 0,
@@ -162,7 +180,7 @@ class SetViewController: UIViewController, UIDynamicAnimatorDelegate {
                 cardView.alpha = 0
             })
 
-        cardBehavior = CardBehavior(in: animator)
+        var cardBehavior = CardBehavior(in: animator)
 
         let temporaryView: SetCardView = {
             let newFrame = view.convert(cardView.frame, to: scoreView)
@@ -171,37 +189,40 @@ class SetViewController: UIViewController, UIDynamicAnimatorDelegate {
             temporaryView.color = cardView.color
             temporaryView.shading = cardView.shading
             temporaryView.count = cardView.count
-            temporaryView.layer.borderWidth = 1.0
             return temporaryView
         }()
 
         var snapPosition: CGPoint {
-            let newPosition = scoreLabel.convert(scoreLabel.bounds, to: view)
+            let newPosition = scoreView.convert(scoreView.bounds, to: view)
             return CGPoint(x: newPosition.midX , y: newPosition.midY)
         }
 
         scoreView.addSubview(temporaryView)
+
         cardBehavior.addItem(temporaryView)
         cardBehavior.snapPosition = snapPosition
 
         UIViewPropertyAnimator.runningPropertyAnimator(
-            withDuration: 1.0,
-            delay: 0.0,
+            withDuration: 0.25,
+            delay: 0.25,
             options: [.repeat, .curveEaseInOut],
             animations: {
                 temporaryView.transform = CGAffineTransform.init(rotationAngle: CGFloat.pi.arc4random)
                 temporaryView.bounds.size.width = CGFloat(CardPile.Constants.width)
                 temporaryView.bounds.size.height = CGFloat(CardPile.Constants.height)
             },
-            completion: { card in
-                 temporaryView.transform = CGAffineTransform.identity
+            completion: { position in
+                temporaryView.autoresizingMask = [.flexibleTopMargin, .flexibleLeftMargin, .flexibleRightMargin, .flexibleBottomMargin]
             }
         )
     }
 
     func dynamicAnimatorDidPause(_ animator: UIDynamicAnimator) {
+        print("Animator Paused")
         animator.removeAllBehaviors()
+//        scoreView.setNeedsLayout()
     }
+     */
 
     private func updateViewFromModel() {
 
@@ -220,13 +241,15 @@ class SetViewController: UIViewController, UIDynamicAnimatorDelegate {
         }
 
         deckButton.isEnabled = !game.deck.cards.isEmpty || isMatched
-//        scoreLabel.text = "Sets:" // \(game.numberOfSets)"
+        scoreLabel.text = "Sets: \(game.numberOfSets)"
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateViewFromModel()
+
         animator.delegate = self
+        playingFieldView.delegate = self
+        updateViewFromModel()
     }
 
     override func didReceiveMemoryWarning() {
@@ -234,3 +257,20 @@ class SetViewController: UIViewController, UIDynamicAnimatorDelegate {
     }
 }
 
+extension SetViewController: UIDynamicAnimatorDelegate {
+    func dynamicAnimatorDidPause(_ animator: UIDynamicAnimator) {
+        //TODO: Flip views
+    }
+}
+
+extension SetViewController: PlayingFieldViewDelegate {
+    func playingFieldViewFinishedLayout() {
+        print("Completion handler")
+        guard !delayedCards.isEmpty else { return }
+
+        delayedCards.forEach { (card) in
+            dealAnimation(for: card)
+        }
+        delayedCards = []
+    }
+}

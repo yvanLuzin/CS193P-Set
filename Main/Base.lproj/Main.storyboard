@@ -50,7 +50,7 @@
                                 <rect key="frame" x="16" y="637" width="382" height="30"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hZy-Su-eAW">
-                                        <rect key="frame" x="0.0" y="0.0" width="187" height="30"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="122" height="30"/>
                                         <state key="normal" title="Deck"/>
                                         <connections>
                                             <action selector="dealThreeMoreCards:" destination="BYZ-38-t0r" eventType="touchUpInside" id="c5R-0T-bgb"/>
@@ -58,17 +58,16 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S4H-lg-PBW">
                                         <rect key="frame" x="130" y="0.0" width="122" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="New Game"/>
                                         <connections>
                                             <action selector="newGame:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ec2-r3-moO"/>
                                         </connections>
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sco-Yd-Nu0" customClass="CardPile" customModule="Set" customModuleProvider="target">
-                                        <rect key="frame" x="195" y="0.0" width="187" height="30"/>
+                                        <rect key="frame" x="260" y="0.0" width="122" height="30"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sets" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vbQ-3k-bWk">
-                                                <rect key="frame" x="0.0" y="0.0" width="187" height="30"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="122" height="30"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -83,11 +82,6 @@
                                         </constraints>
                                     </view>
                                 </subviews>
-                                <variation key="default">
-                                    <mask key="subviews">
-                                        <exclude reference="S4H-lg-PBW"/>
-                                    </mask>
-                                </variation>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

@@ -10,17 +10,17 @@ import UIKit
 
 class PlayingFieldView: UIView {
     lazy var grid: Grid = configureGrid()
-    var isRearranged = false;
+    var isRearranged = false
 
     var numberOfCardsOnField: Int {
         return subviews.indices.count
     }
 
-    var initialPosition: CGRect?
+    var delegate: PlayingFieldViewDelegate?
 
     private func configureGrid() -> Grid {
         var cardRatio: CGFloat {
-            return self.bounds.width / self.bounds.height
+            return 1.7
         }
 
         var grid = Grid(layout: .aspectRatio(cardRatio), frame: self.bounds)
@@ -30,50 +30,31 @@ class PlayingFieldView: UIView {
     }
 
     override func layoutSubviews() {
-        grid = configureGrid()
-
-        guard numberOfCardsOnField <= grid.cellCount else { return }
-
-        for index in subviews.indices {
-            UIViewPropertyAnimator.runningPropertyAnimator(
-                withDuration: SetViewController.Constants.animationTime,
-                delay: 0,
-                options: [],
-                animations: {
-                    self.subviews[index].frame = self.grid[index]!
-            },
-                completion: { finish in
-
-            }
-            )
-        }
-    }
-
-    /*
-    override func layoutSubviews() {
         super.layoutSubviews()
 
-        if initialPosition == nil {
-            grid = configureGrid()
-            print("YEP")
-            for index in subviews.indices {
-                UIViewPropertyAnimator.runningPropertyAnimator(
-                    withDuration: SetViewController.Constants.animationTime,
-                    delay: 0,
-                    options: [],
-                    animations: {
-                        self.subviews[index].frame = self.grid[index]!
-                },
-                    completion: { finish in
-                        
+        grid = configureGrid()
+        guard numberOfCardsOnField <= grid.cellCount else { return }
+
+        isRearranged = true
+
+        print("Layout animation")
+        UIViewPropertyAnimator.runningPropertyAnimator(
+            withDuration: Set.Constants.Animation.layout,
+            delay: 0,
+            options: [],
+            animations: {
+                for index in self.subviews.indices {
+                    self.subviews[index].frame = self.grid[index]!
                 }
-                )
-            }
-        } else {
-            for index in subviews.indices {
-                subviews[index].frame = initialPosition!
-            }
+        },
+            completion: { finish in
+                self.delegate?.playingFieldViewFinishedLayout()
+                self.isRearranged = false
         }
+        )
     }
-    */
+}
+
+protocol PlayingFieldViewDelegate {
+    func playingFieldViewFinishedLayout()
 }

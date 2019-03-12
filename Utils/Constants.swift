@@ -11,6 +11,7 @@ import Foundation
 extension Set {
     struct Constants {
         struct Animation {
+            static var alpha = 0.0
             static var deal = 1.0
             static var flyaway = 1.0
             static var layout = 0.3 //0.3

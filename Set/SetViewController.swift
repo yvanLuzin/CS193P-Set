@@ -58,7 +58,7 @@ class SetViewController: UIViewController {
                 let card = SetCardView()
                 let tapGesture = UITapGestureRecognizer(target: self, action: #selector(touchCard(sender:)))
                 card.addGestureRecognizer(tapGesture)
-                card.alpha = 0
+                card.alpha = CGFloat(Set.Constants.Animation.alpha)
                 playingFieldView.addSubview(card)
             }
         } else {
@@ -87,7 +87,8 @@ class SetViewController: UIViewController {
     @objc private func touchCard(sender: UITapGestureRecognizer) {
         switch sender.state {
         case .ended:
-            if let card = sender.view as? SetCardView, let selectIndex = playingFieldView.subviews.index(of: card) {
+            if let card = sender.view as? SetCardView,
+                let selectIndex = playingFieldView.subviews.index(of: card) {
                 game.selectCard(selectIndex)
             }
             updateViewFromModel()
@@ -116,7 +117,10 @@ class SetViewController: UIViewController {
         cardView.textualRepresentation = card.description
 
         //MARK: Deal animation
-        dealAnimation(for: cardView)
+        //if card not exist in the deck
+        dealAnimation(for: cardView) {
+
+        }
 
         switch card[.color] {
             case .first: cardView.color = SetCardView.Color.red
@@ -154,17 +158,25 @@ class SetViewController: UIViewController {
         }
     }
 
-    private func dealAnimation(for cardView: SetCardView) {
-        if cardView.alpha == 0 {
-            UIViewPropertyAnimator.runningPropertyAnimator(
-                withDuration: Set.Constants.Animation.deal,
-                delay: 0,
-                options: [],
-                animations: {
-                    cardView.alpha = 1
+    private func dealAnimation(for cardView: SetCardView, onCompletion: @escaping () -> Void) {
+        guard cardView.alpha == CGFloat(Set.Constants.Animation.alpha) else { return }
+
+        let position: CGRect = cardView.frame
+        let tempPosition: CGRect = deckButton.convert(deckButton.bounds, to: view)
+
+        cardView.frame = tempPosition
+        cardView.alpha = 1
+        UIViewPropertyAnimator.runningPropertyAnimator(
+            withDuration: Set.Constants.Animation.deal,
+            delay: 0,
+            options: [],
+            animations: {
+                cardView.frame = position
+            },
+            completion: { (position) in
+                onCompletion()
             }
-            )
-        }
+        )
     }
 
     private func flyAwayAnimation(for cardView: SetCardView) {
@@ -173,7 +185,7 @@ class SetViewController: UIViewController {
             delay: 0,
             options: [],
             animations: {
-                cardView.alpha = 0
+                cardView.alpha = CGFloat(Set.Constants.Animation.alpha)
         })
     }
 

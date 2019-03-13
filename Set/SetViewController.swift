@@ -118,9 +118,7 @@ class SetViewController: UIViewController {
 
         //MARK: Deal animation
         //if card not exist in the deck
-        dealAnimation(for: cardView) {
-
-        }
+        dealAnimation(for: cardView)
 
         switch card[.color] {
             case .first: cardView.color = SetCardView.Color.red
@@ -158,39 +156,50 @@ class SetViewController: UIViewController {
         }
     }
 
-    private func dealAnimation(for cardView: SetCardView, onCompletion: @escaping () -> Void) {
+    private func dealAnimation(for cardView: SetCardView) {
         guard cardView.alpha == CGFloat(Set.Constants.Animation.alpha) else { return }
 
-        let position: CGRect = cardView.frame
+        dealAnimationHelper(currentCardView: cardView, nextCardView: nil)
+    }
+
+    private func dealAnimationHelper(currentCardView: SetCardView, nextCardView: SetCardView?) {
+        let position: CGRect = currentCardView.frame
         let tempPosition: CGRect = deckButton.convert(deckButton.bounds, to: view)
 
-        cardView.frame = tempPosition
-        cardView.alpha = 1
+        let bufferCard: SetCardView
+
+//        if (nextCardView == nil) {
+//            bufferCard = currentCardView
+//            dealAnimationHelper(currentCardView: <#T##SetCardView#>, nextCardView: bufferCard)
+//        }
+
+        currentCardView.frame = tempPosition
+        currentCardView.alpha = 1
         UIViewPropertyAnimator.runningPropertyAnimator(
             withDuration: Set.Constants.Animation.deal,
             delay: 0,
             options: [],
             animations: {
-                cardView.frame = position
-            },
+                currentCardView.frame = position
+        },
             completion: { (position) in
-                onCompletion()
-            }
+//                self.dealAnimation(for: nextCardView)
+        }
         )
     }
 
-    private func flyAwayAnimation(for cardView: SetCardView) {
-        UIViewPropertyAnimator.runningPropertyAnimator(
-            withDuration: Set.Constants.Animation.flyaway,
-            delay: 0,
-            options: [],
-            animations: {
-                cardView.alpha = CGFloat(Set.Constants.Animation.alpha)
-        })
-    }
+//    private func flyAwayAnimation(for cardView: SetCardView) {
+//        UIViewPropertyAnimator.runningPropertyAnimator(
+//            withDuration: Set.Constants.Animation.flyaway,
+//            delay: 0,
+//            options: [],
+//            animations: {
+//                cardView.alpha = CGFloat(Set.Constants.Animation.alpha)
+//        })
+//    }
 
-    /*
-    private func flyAwayAnimationOld(for cardView: SetCardView) {
+
+    private func flyAwayAnimation(for cardView: SetCardView) {
         UIViewPropertyAnimator.runningPropertyAnimator(
             withDuration: 0.3,
             delay: 0,
@@ -236,18 +245,12 @@ class SetViewController: UIViewController {
         )
     }
 
-    func dynamicAnimatorDidPause(_ animator: UIDynamicAnimator) {
-        print("Animator Paused")
-        animator.removeAllBehaviors()
-//        scoreView.setNeedsLayout()
-    }
-     */
-
     private func updateViewFromModel() {
         var numberOfCards: Int {
             let result = game.cardsBeingPlayed.count - playingFieldView.subviews.count
             return result
         }
+
 
         changeNumberOfCardsOnField(by: numberOfCards) {
             for index in self.playingFieldView.subviews.indices {
@@ -257,6 +260,7 @@ class SetViewController: UIViewController {
                 }
             }
         }
+
 
         deckButton.isEnabled = !game.deck.cards.isEmpty || isMatched
         scoreLabel.text = "Sets: \(game.numberOfSets)"
@@ -281,6 +285,7 @@ class SetViewController: UIViewController {
 
 extension SetViewController: UIDynamicAnimatorDelegate {
     func dynamicAnimatorDidPause(_ animator: UIDynamicAnimator) {
-        //TODO: Flip views
+        animator.removeAllBehaviors()
+        //        scoreView.setNeedsLayout()
     }
 }

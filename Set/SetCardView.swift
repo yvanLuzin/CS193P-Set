@@ -16,6 +16,7 @@ class SetCardView: UIView {
     var identifier: Int? { didSet { setNeedsDisplay() } }
 
     var isSelected: Bool = false { didSet { setNeedsDisplay() } }
+    var isFaceUp: Bool = true { didSet { setNeedsDisplay() } }
 
     var textualRepresentation: String = ""
 
@@ -36,7 +37,7 @@ class SetCardView: UIView {
         switch isMatched {
         case .matched: Color.confirm.setFill()
         case .mismatched: Color.denied.setFill()
-        case .idle: UIColor.white.setFill()
+        case .idle: isFaceUp ? UIColor.white.setFill() : UIColor.gray.setFill()
         }
 
         roundedRect.fill()
@@ -46,6 +47,8 @@ class SetCardView: UIView {
             Color.outline.setStroke()
             roundedRect.stroke()
         }
+
+        guard isFaceUp else { return }
 
         var figureColor = color ?? UIColor.white
 

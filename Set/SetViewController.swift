@@ -37,7 +37,6 @@ class SetViewController: UIViewController {
     }
 
     @IBAction func dealThreeMoreCards(_ sender: UIButton?) {
-        //Can move all this to model
         if isMatched {
             game.replaceCards()
         } else {
@@ -153,13 +152,15 @@ class SetViewController: UIViewController {
     }
 
     private func flyAwayAnimation(for cardView: SetCardView) {
-        UIViewPropertyAnimator.runningPropertyAnimator(
-            withDuration: 0.3,
-            delay: 0,
-            options: [],
-            animations: {
-                cardView.alpha = 0
-            })
+//        UIViewPropertyAnimator.runningPropertyAnimator(
+//            withDuration: 2,
+//            delay: 0,
+//            options: [],
+//            animations: {
+//                cardView.alpha = CGFloat(Set.Constants.Animation.alpha)
+//            })
+
+        cardView.alpha = CGFloat(Set.Constants.Animation.alpha)
 
         var cardBehavior = CardBehavior(in: animator)
 
@@ -211,6 +212,7 @@ class SetViewController: UIViewController {
                     self.setCardAppearance(to: cardView, from: card)
                 }
             }
+            self.game.replaceCards()
             self.dealAnimationHanlder(for: self.playingFieldView.subviews as! [SetCardView])
         }
 
@@ -221,6 +223,8 @@ class SetViewController: UIViewController {
     private func dealAnimationHanlder(for collection: [SetCardView]) {
         var animatorsList: [UIViewPropertyAnimator] = []
 
+        print(collection.count);
+
         collection.forEach { (cardView) in
             guard cardView.alpha == CGFloat(Set.Constants.Animation.alpha) else { return }
 
@@ -229,6 +233,7 @@ class SetViewController: UIViewController {
 
             cardView.frame = tempPosition
             cardView.alpha = 1
+            cardView.isFaceUp = !cardView.isFaceUp
 
             let animator = {
                 UIViewPropertyAnimator(
@@ -237,8 +242,19 @@ class SetViewController: UIViewController {
                     animations: {
                         cardView.frame = position
                 })
-            }
-            animatorsList.append(animator())
+            }()
+
+            animator.addCompletion({ _ in
+                UIView.transition(with: cardView,
+                                  duration: Set.Constants.Animation.deal,
+                                  options: [.transitionFlipFromLeft],
+                                  animations: {
+                                      cardView.isFaceUp = !cardView.isFaceUp
+                                  },
+                                  completion: nil)
+            })
+
+            animatorsList.append(animator)
         }
 
         guard !animatorsList.isEmpty else { return }
@@ -259,8 +275,8 @@ class SetViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         animator.delegate = self
+        game.delegate = self
         updateViewFromModel()
     }
 
@@ -278,5 +294,11 @@ extension SetViewController: UIDynamicAnimatorDelegate {
     func dynamicAnimatorDidPause(_ animator: UIDynamicAnimator) {
         animator.removeAllBehaviors()
         //        scoreView.setNeedsLayout()
+    }
+}
+
+extension SetViewController: SetDelegate {
+    func didMatchCards() {
+//        dealThreeMoreCards(nil)
     }
 }

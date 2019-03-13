@@ -15,6 +15,7 @@ class Set {
     private(set) var matchedCards = [Card]()
     private(set) var score = 0
     private(set) var numberOfSets = 0
+    var delegate: SetDelegate?
 
     func dealCards(_ amount: Int) {
         for _ in 0..<amount {
@@ -38,10 +39,12 @@ class Set {
             matchedCards += selectedCards
             score += 3
             numberOfSets += 1
+            delegate?.didMatchCards()
         }
     }
 
     private func matchAnyCard() {
+        delegate?.didMatchCards()
         matchedCards += selectedCards
         score += 3
         numberOfSets += 1
@@ -104,4 +107,8 @@ class Set {
     init() {
         dealCards(Set.Constants.startingCardCount)
     }
+}
+
+protocol SetDelegate {
+    func didMatchCards() -> Void
 }

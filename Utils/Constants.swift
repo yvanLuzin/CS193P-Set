@@ -11,12 +11,12 @@ import Foundation
 extension Set {
     struct Constants {
         struct Animation {
-            static var alpha = 0.0
-            static var deal = 0.3
+            static var alpha = 0
+            static var deal = 0.4
             static var flyaway = 1.0
             static var layout = 0.3 //0.3
         }
-        static var startingCardCount = 12 //12
+        static var startingCardCount = 3 //12
         static var numberOfCardsToDeal = 3 //3
     }
 }

@@ -36,7 +36,7 @@ class SetViewController: UIViewController {
         }
     }
 
-    @IBAction func dealThreeMoreCards(_ sender: UIButton) {
+    @IBAction func dealThreeMoreCards(_ sender: UIButton?) {
         //Can move all this to model
         if isMatched {
             game.replaceCards()
@@ -116,10 +116,6 @@ class SetViewController: UIViewController {
         cardView.identifier = card.hashValue
         cardView.textualRepresentation = card.description
 
-        //MARK: Deal animation
-        //if card not exist in the deck
-        dealAnimation(for: cardView)
-
         switch card[.color] {
             case .first: cardView.color = SetCardView.Color.red
             case .second: cardView.color = SetCardView.Color.green
@@ -155,49 +151,6 @@ class SetViewController: UIViewController {
             cardView.isMatched = .idle
         }
     }
-
-    private func dealAnimation(for cardView: SetCardView) {
-        guard cardView.alpha == CGFloat(Set.Constants.Animation.alpha) else { return }
-
-        dealAnimationHelper(currentCardView: cardView, nextCardView: nil)
-    }
-
-    private func dealAnimationHelper(currentCardView: SetCardView, nextCardView: SetCardView?) {
-        let position: CGRect = currentCardView.frame
-        let tempPosition: CGRect = deckButton.convert(deckButton.bounds, to: view)
-
-        let bufferCard: SetCardView
-
-//        if (nextCardView == nil) {
-//            bufferCard = currentCardView
-//            dealAnimationHelper(currentCardView: <#T##SetCardView#>, nextCardView: bufferCard)
-//        }
-
-        currentCardView.frame = tempPosition
-        currentCardView.alpha = 1
-        UIViewPropertyAnimator.runningPropertyAnimator(
-            withDuration: Set.Constants.Animation.deal,
-            delay: 0,
-            options: [],
-            animations: {
-                currentCardView.frame = position
-        },
-            completion: { (position) in
-//                self.dealAnimation(for: nextCardView)
-        }
-        )
-    }
-
-//    private func flyAwayAnimation(for cardView: SetCardView) {
-//        UIViewPropertyAnimator.runningPropertyAnimator(
-//            withDuration: Set.Constants.Animation.flyaway,
-//            delay: 0,
-//            options: [],
-//            animations: {
-//                cardView.alpha = CGFloat(Set.Constants.Animation.alpha)
-//        })
-//    }
-
 
     private func flyAwayAnimation(for cardView: SetCardView) {
         UIViewPropertyAnimator.runningPropertyAnimator(
@@ -251,7 +204,6 @@ class SetViewController: UIViewController {
             return result
         }
 
-
         changeNumberOfCardsOnField(by: numberOfCards) {
             for index in self.playingFieldView.subviews.indices {
                 if let cardView = (self.playingFieldView.subviews[index] as? SetCardView) {
@@ -259,11 +211,50 @@ class SetViewController: UIViewController {
                     self.setCardAppearance(to: cardView, from: card)
                 }
             }
+            self.dealAnimationHanlder(for: self.playingFieldView.subviews as! [SetCardView])
         }
-
 
         deckButton.isEnabled = !game.deck.cards.isEmpty || isMatched
         scoreLabel.text = "Sets: \(game.numberOfSets)"
+    }
+
+    private func dealAnimationHanlder(for collection: [SetCardView]) {
+        var animatorsList: [UIViewPropertyAnimator] = []
+
+        collection.forEach { (cardView) in
+            guard cardView.alpha == CGFloat(Set.Constants.Animation.alpha) else { return }
+
+            let position: CGRect = cardView.frame
+            let tempPosition: CGRect = deckButton.convert(deckButton.bounds, to: view)
+
+            cardView.frame = tempPosition
+            cardView.alpha = 1
+
+            let animator = {
+                UIViewPropertyAnimator(
+                    duration: Set.Constants.Animation.deal,
+                    curve: .easeIn,
+                    animations: {
+                        cardView.frame = position
+                })
+            }
+            animatorsList.append(animator())
+        }
+
+        guard !animatorsList.isEmpty else { return }
+
+        animatorsList.forEach { (animator) in
+            if let currentIndex = animatorsList.firstIndex(of: animator) {
+                let nextIndex = animatorsList.index(currentIndex, offsetBy: 1)
+                if nextIndex < animatorsList.count {
+                    animator.addCompletion({ _ in
+                        animatorsList[nextIndex].startAnimation()
+                    })
+                }
+            }
+        }
+
+        animatorsList.first?.startAnimation()
     }
 
     override func viewDidLoad() {
